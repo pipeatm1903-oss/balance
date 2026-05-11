@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Balance">
+<meta name="theme-color" content="#0a0e0c">
+<title>Mi Balance</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230a0e0c'/%3E%3Ctext x='90' y='118' font-family='Georgia,serif' font-size='90' font-style='italic' font-weight='600' fill='%23d4a574' text-anchor='middle'%3Eb%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e0c;--bg-card:#161c19;--border:#1f2622;--border-strong:#2a3530;--text:#e8efe9;--text-dim:#8a9690;--text-faint:#515a55;--green:#4ade80;--green-soft:#4ade8015;--red:#f87171;--red-soft:#f8717115;--gold:#d4a574;--display:'Fraunces',serif;--mono:'JetBrains Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:14px;min-height:100vh;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(ellipse at top,#14201a 0%,transparent 50%),radial-gradient(ellipse at bottom right,#1a1410 0%,transparent 50%),var(--bg);background-attachment:fixed;padding:max(24px,env(safe-area-inset-top)) 16px max(100px,env(safe-area-inset-bottom))}
+.container{max-width:720px;margin:0 auto}
+.header{margin-bottom:32px;border-bottom:1px solid var(--border);padding-bottom:20px}
+.eyebrow{font-size:11px;letter-spacing:.2em;color:var(--text-faint);text-transform:uppercase;margin-bottom:8px}
+.title{font-family:var(--display);font-weight:800;font-size:clamp(32px,7vw,48px);line-height:.95;letter-spacing:-.02em}
+.title em{font-style:italic;font-weight:400;color:var(--gold)}
+.balance-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:28px 24px;margin-bottom:16px;position:relative;overflow:hidden}
+.balance-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,currentColor 200%);opacity:.04;pointer-events:none}
+.balance-card.positive{color:var(--green)}.balance-card.negative{color:var(--red)}.balance-card.neutral{color:var(--text-dim)}
+.balance-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-faint);margin-bottom:12px}
+.balance-amount{font-family:var(--display);font-weight:600;font-size:clamp(40px,9vw,56px);letter-spacing:-.03em;line-height:1}
+.balance-amount .sign{font-style:italic;font-weight:400;margin-right:4px}
+.balance-status{margin-top:10px;font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:8px}
+.status-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+.stat{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:16px 14px}
+.stat-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px}
+.stat-value{font-family:var(--display);font-size:22px;font-weight:600;letter-spacing:-.01em}
+.stat.deposits .stat-value{color:var(--red)}.stat.withdrawals .stat-value{color:var(--green)}
+.form-section{margin-bottom:28px}
+.section-title{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-.01em;margin-bottom:14px;display:flex;align-items:baseline;gap:10px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.form{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:18px}
+.type-toggle{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--bg);padding:4px;border-radius:10px;margin-bottom:14px;border:1px solid var(--border)}
+.type-btn{background:transparent;border:none;color:var(--text-dim);font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:10px;border-radius:7px;cursor:pointer;transition:all .2s;font-weight:500}
+.type-btn.active{background:var(--bg-card);color:var(--text);box-shadow:0 1px 0 var(--border-strong)}
+.type-btn[data-type="deposit"].active{color:var(--red)}.type-btn[data-type="withdrawal"].active{color:var(--green)}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px}
+.field input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:16px;-webkit-appearance:none;appearance:none}
+.field input:focus{outline:none;border-color:var(--gold)}
+.field input::placeholder{color:var(--text-faint)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.submit{width:100%;background:var(--text);color:var(--bg);border:none;border-radius:8px;padding:14px;font-family:var(--mono);font-size:12px;letter-spacing:.15em;text-transform:uppercase;font-weight:600;cursor:pointer;margin-top:4px}
+.submit:active{transform:scale(.98)}
+.filter-bar{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.filter-btn{background:var(--bg-card);border:1px solid var(--border);color:var(--text-dim);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.filter-btn.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.history-list{display:flex;flex-direction:column;gap:8px}
+.empty{text-align:center;padding:40px 20px;color:var(--text-faint);font-style:italic;font-family:var(--display)}
+.entry{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:14px}
+.entry-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:20px;font-weight:600;flex-shrink:0}
+.entry.deposit .entry-icon{background:var(--red-soft);color:var(--red)}
+.entry.withdrawal .entry-icon{background:var(--green-soft);color:var(--green)}
+.entry-info{flex:1;min-width:0}
+.entry-site{font-size:14px;color:var(--text);font-weight:500;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.entry-meta{font-size:11px;color:var(--text-faint);letter-spacing:.05em}
+.entry-amount{font-family:var(--display);font-size:18px;font-weight:600;letter-spacing:-.01em;text-align:right}
+.entry.deposit .entry-amount{color:var(--red)}.entry.withdrawal .entry-amount{color:var(--green)}
+.entry-delete{background:transparent;border:none;color:var(--text-faint);cursor:pointer;font-size:22px;padding:4px 8px;line-height:1}
+.entry-delete:active{color:var(--red)}
+.footer-actions{margin-top:28px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.footer-btn{background:transparent;border:1px solid var(--border);color:var(--text-faint);font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:8px 14px;border-radius:999px;cursor:pointer}
+.footer-btn:active{color:var(--text);border-color:var(--border-strong)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+.modal-overlay.active{display:flex}
+.modal{background:var(--bg-card);border:1px solid var(--border-strong);border-radius:16px;padding:24px;max-width:360px;width:100%}
+.modal-title{font-family:var(--display);font-size:22px;font-weight:600;margin-bottom:8px}
+.modal-text{color:var(--text-dim);font-size:13px;margin-bottom:20px;line-height:1.5}
+.modal-actions{display:flex;gap:8px}
+.modal-btn{flex:1;padding:12px;border-radius:8px;border:none;font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;font-weight:600;cursor:pointer}
+.modal-btn.cancel{background:transparent;border:1px solid var(--border-strong);color:var(--text)}
+.modal-btn.confirm{background:var(--red);color:var(--bg)}
+.toast{position:fixed;bottom:max(24px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:var(--bg);padding:12px 20px;border-radius:999px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;opacity:0;transition:all .3s;z-index:200}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+</style>
+</head>
+<body>
+<div class="container">
+<header class="header">
+<div class="eyebrow">Control financiero · Casas de apuestas</div>
+<h1 class="title">Mi <em>balance</em></h1>
+</header>
+<div id="balanceCard" class="balance-card neutral">
+<div class="balance-label">Balance neto</div>
+<div id="balanceAmount" class="balance-amount">—</div>
+<div id="balanceStatus" class="balance-status"><span class="status-dot"></span><span id="statusText">Sin movimientos</span></div>
+</div>
+<div class="stats">
+<div class="stat deposits"><div class="stat-label">Ingresado</div><div id="totalDeposits" class="stat-value">0,00 €</div></div>
+<div class="stat withdrawals"><div class="stat-label">Retirado</div><div id="totalWithdrawals" class="stat-value">0,00 €</div></div>
+</div>
+<section class="form-section">
+<h2 class="section-title">Nuevo movimiento</h2>
+<div class="form">
+<div class="type-toggle">
+<button type="button" class="type-btn active" data-type="deposit">↓ Ingreso</button>
+<button type="button" class="type-btn" data-type="withdrawal">↑ Retirada</button>
+</div>
+<div class="field"><label for="site">Casa de apuestas</label><input type="text" id="site" placeholder="Bet365, William Hill, Codere…" autocomplete="off"></div>
+<div class="row">
+<div class="field"><label for="amount">Cantidad (€)</label><input type="number" id="amount" step="0.01" min="0" placeholder="0,00" inputmode="decimal"></div>
+<div class="field"><label for="date">Fecha</label><input type="date" id="date"></div>
+</div>
+<button id="addBtn" class="submit">Añadir movimiento</button>
+</div>
+</section>
+<section>
+<h2 class="section-title">Historial</h2>
+<div class="filter-bar">
+<button class="filter-btn active" data-filter="all">Todos</button>
+<button class="filter-btn" data-filter="deposit">Ingresos</button>
+<button class="filter-btn" data-filter="withdrawal">Retiradas</button>
+</div>
+<div id="historyList" class="history-list"></div>
+</section>
+<div class="footer-actions">
+<button id="exportBtn" class="footer-btn">Exportar CSV</button>
+<button id="backupBtn" class="footer-btn">Copia seguridad</button>
+<button id="restoreBtn" class="footer-btn">Restaurar</button>
+<button id="clearBtn" class="footer-btn">Borrar todo</button>
+<input type="file" id="restoreInput" accept=".json" style="display:none">
+</div>
+</div>
+<div id="modal" class="modal-overlay">
+<div class="modal">
+<div class="modal-title" id="modalTitle">¿Estás seguro?</div>
+<div class="modal-text" id="modalText">Esta acción no se puede deshacer.</div>
+<div class="modal-actions">
+<button class="modal-btn cancel" id="modalCancel">Cancelar</button>
+<button class="modal-btn confirm" id="modalConfirm">Confirmar</button>
+</div>
+</div>
+</div>
+<div id="toast" class="toast"></div>
+<script>
+const KEY='mi-balance-v1';let entries=[],currentType='deposit',currentFilter='all',pendingAction=null;
+function load(){try{const r=localStorage.getItem(KEY);entries=r?JSON.parse(r):[]}catch(e){entries=[]}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(entries))}catch(e){toast('Error al guardar')}}
+const fmt=n=>new Intl.NumberFormat('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n)+' €';
+const fmtDate=iso=>new Date(iso).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'});
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function render(){
+const td=entries.filter(e=>e.type==='deposit').reduce((s,e)=>s+e.amount,0);
+const tw=entries.filter(e=>e.type==='withdrawal').reduce((s,e)=>s+e.amount,0);
+const b=tw-td;
+document.getElementById('totalDeposits').textContent=fmt(td);
+document.getElementById('totalWithdrawals').textContent=fmt(tw);
+const c=document.getElementById('balanceCard'),a=document.getElementById('balanceAmount'),s=document.getElementById('statusText');
+c.classList.remove('positive','negative','neutral');
+if(entries.length===0){c.classList.add('neutral');a.innerHTML='0,00 €';s.textContent='Sin movimientos'}
+else if(b>0){c.classList.add('positive');a.innerHTML='<span class="sign">+</span>'+fmt(b);s.textContent='En beneficio'}
+else if(b<0){c.classList.add('negative');a.innerHTML='<span class="sign">−</span>'+fmt(Math.abs(b));s.textContent='En pérdida'}
+else{c.classList.add('neutral');a.innerHTML='0,00 €';s.textContent='Empate técnico'}
+renderHistory();
+}
+function renderHistory(){
+const l=document.getElementById('historyList');
+let f=entries.slice();
+if(currentFilter!=='all')f=f.filter(e=>e.type===currentFilter);
+f.sort((a,b)=>new Date(b.date)-new Date(a.date)||b.id-a.id);
+if(f.length===0){l.innerHTML='<div class="empty">No hay movimientos aún</div>';return}
+l.innerHTML=f.map(e=>`<div class="entry ${e.type}"><div class="entry-icon">${e.type==='deposit'?'↓':'↑'}</div><div class="entry-info"><div class="entry-site">${esc(e.site)}</div><div class="entry-meta">${fmtDate(e.date)} · ${e.type==='deposit'?'Ingreso':'Retirada'}</div></div><div class="entry-amount">${e.type==='deposit'?'−':'+'}${fmt(e.amount)}</div><button class="entry-delete" data-id="${e.id}">×</button></div>`).join('');
+l.querySelectorAll('.entry-delete').forEach(b=>b.addEventListener('click',()=>confirmDelete(parseInt(b.dataset.id))));
+}
+function addEntry(){
+const site=document.getElementById('site').value.trim();
+const amount=parseFloat(document.getElementById('amount').value);
+const date=document.getElementById('date').value;
+if(!site){toast('Falta la casa');return}
+if(!amount||amount<=0){toast('Cantidad inválida');return}
+if(!date){toast('Falta la fecha');return}
+entries.push({id:Date.now(),type:currentType,site,amount,date});
+save();render();
+document.getElementById('site').value='';document.getElementById('amount').value='';
+toast(currentType==='deposit'?'Ingreso añadido':'Retirada añadida');
+}
+function confirmDelete(id){
+const e=entries.find(x=>x.id===id);if(!e)return;
+pendingAction=()=>{entries=entries.filter(x=>x.id!==id);save();render();toast('Eliminado')};
+showModal('Eliminar movimiento',`${e.site} · ${fmt(e.amount)}. Esta acción no se puede deshacer.`);
+}
+function confirmClearAll(){
+if(entries.length===0)return;
+pendingAction=()=>{entries=[];save();render();toast('Todo borrado')};
+showModal('Borrar todos los datos','Vas a eliminar todo el historial. Esta acción no se puede deshacer.');
+}
+function exportCSV(){
+if(entries.length===0){toast('Nada que exportar');return}
+const h='Fecha,Tipo,Casa,Cantidad\n';
+const r=entries.slice().sort((a,b)=>new Date(a.date)-new Date(b.date)).map(e=>`${e.date},${e.type==='deposit'?'Ingreso':'Retirada'},"${e.site.replace(/"/g,'""')}",${e.amount.toFixed(2)}`).join('\n');
+download(h+r,`balance-${new Date().toISOString().slice(0,10)}.csv`,'text/csv;charset=utf-8;');
+toast('CSV descargado');
+}
+function backupJSON(){
+if(entries.length===0){toast('Nada que respaldar');return}
+download(JSON.stringify({version:1,exportedAt:new Date().toISOString(),entries},null,2),`backup-balance-${new Date().toISOString().slice(0,10)}.json`,'application/json');
+toast('Copia guardada');
+}
+function download(c,f,m){
+const b=new Blob([c],{type:m}),u=URL.createObjectURL(b),a=document.createElement('a');
+a.href=u;a.download=f;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);
+}
+function restoreFromFile(file){
+const r=new FileReader();
+r.onload=e=>{
+try{
+const d=JSON.parse(e.target.result);
+if(!Array.isArray(d.entries))throw new Error();
+pendingAction=()=>{entries=d.entries;save();render();toast('Datos restaurados')};
+showModal('Restaurar copia',`Vas a importar ${d.entries.length} movimientos. Esto reemplazará tus datos actuales.`);
+}catch(err){toast('Archivo inválido')}
+};
+r.readAsText(file);
+}
+function showModal(t,x){document.getElementById('modalTitle').textContent=t;document.getElementById('modalText').textContent=x;document.getElementById('modal').classList.add('active')}
+function hideModal(){document.getElementById('modal').classList.remove('active');pendingAction=null}
+document.querySelectorAll('.type-btn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.type-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentType=b.dataset.type}));
+document.querySelectorAll('.filter-btn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentFilter=b.dataset.filter;renderHistory()}));
+document.getElementById('addBtn').addEventListener('click',addEntry);
+document.getElementById('exportBtn').addEventListener('click',exportCSV);
+document.getElementById('backupBtn').addEventListener('click',backupJSON);
+document.getElementById('clearBtn').addEventListener('click',confirmClearAll);
+document.getElementById('restoreBtn').addEventListener('click',()=>document.getElementById('restoreInput').click());
+document.getElementById('restoreInput').addEventListener('change',e=>{if(e.target.files[0])restoreFromFile(e.target.files[0]);e.target.value=''});
+document.getElementById('modalCancel').addEventListener('click',hideModal);
+document.getElementById('modalConfirm').addEventListener('click',()=>{if(pendingAction)pendingAction();hideModal()});
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')hideModal()});
+['site','amount','date'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')addEntry()}));
+document.getElementById('date').valueAsDate=new Date();
+load();render();
+</script>
+</body>
+</html>
