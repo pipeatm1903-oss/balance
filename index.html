@@ -19,15 +19,10 @@
 html,body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:14px;min-height:100vh;-webkit-font-smoothing:antialiased}
 body{background:radial-gradient(ellipse at top,#14201a 0%,transparent 50%),radial-gradient(ellipse at bottom right,#1a1410 0%,transparent 50%),var(--bg);background-attachment:fixed;padding:max(24px,env(safe-area-inset-top)) 16px max(100px,env(safe-area-inset-bottom))}
 .container{max-width:720px;margin:0 auto}
-.header{margin-bottom:20px}
+.header{margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:20px}
 .eyebrow{font-size:11px;letter-spacing:.2em;color:var(--text-faint);text-transform:uppercase;margin-bottom:8px}
 .title{font-family:var(--display);font-weight:800;font-size:clamp(32px,7vw,48px);line-height:.95;letter-spacing:-.02em}
 .title em{font-style:italic;font-weight:400;color:var(--gold)}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--bg-card);padding:5px;border-radius:12px;margin-bottom:24px;border:1px solid var(--border)}
-.tab{background:transparent;border:none;color:var(--text-dim);font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:12px;border-radius:8px;cursor:pointer;transition:all .2s;font-weight:500}
-.tab.active{background:var(--text);color:var(--bg);font-weight:600}
-.page{display:none}
-.page.active{display:block}
 .balance-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:28px 24px;margin-bottom:16px;position:relative;overflow:hidden}
 .balance-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,currentColor 200%);opacity:.04;pointer-events:none}
 .balance-card.positive{color:var(--green)}.balance-card.negative{color:var(--red)}.balance-card.neutral{color:var(--text-dim)}
@@ -36,11 +31,20 @@ body{background:radial-gradient(ellipse at top,#14201a 0%,transparent 50%),radia
 .balance-amount .sign{font-style:italic;font-weight:400;margin-right:4px}
 .balance-status{margin-top:10px;font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:8px}
 .status-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 .stat{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:16px 14px}
 .stat-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px}
 .stat-value{font-family:var(--display);font-size:22px;font-weight:600;letter-spacing:-.01em}
 .stat.deposits .stat-value{color:var(--red)}.stat.withdrawals .stat-value{color:var(--green)}
+/* Gráfica */
+.chart-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:18px 14px 10px;margin-bottom:26px;overflow:hidden}
+.chart-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;padding:0 4px}
+.chart-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint)}
+.chart-final{font-family:var(--display);font-size:15px;font-weight:600}
+.chart-final.positive{color:var(--green)}.chart-final.negative{color:var(--red)}.chart-final.neutral{color:var(--text-dim)}
+.chart-wrap{width:100%}
+svg.chart{width:100%;height:170px;display:block}
+.chart-empty{text-align:center;padding:34px 10px;color:var(--text-faint);font-style:italic;font-family:var(--display);font-size:15px}
 .form-section{margin-bottom:28px}
 .section-title{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-.01em;margin-bottom:14px;display:flex;align-items:baseline;gap:10px}
 .section-title::after{content:'';flex:1;height:1px;background:var(--border)}
@@ -48,8 +52,7 @@ body{background:radial-gradient(ellipse at top,#14201a 0%,transparent 50%),radia
 .type-toggle{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--bg);padding:4px;border-radius:10px;margin-bottom:14px;border:1px solid var(--border)}
 .type-btn{background:transparent;border:none;color:var(--text-dim);font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:10px;border-radius:7px;cursor:pointer;transition:all .2s;font-weight:500}
 .type-btn.active{background:var(--bg-card);color:var(--text);box-shadow:0 1px 0 var(--border-strong)}
-.type-btn[data-type="deposit"].active,.type-btn[data-type="loss"].active,.type-btn[data-acctype="loss"].active{color:var(--red)}
-.type-btn[data-type="withdrawal"].active,.type-btn[data-type="win"].active,.type-btn[data-acctype="win"].active{color:var(--green)}
+.type-btn[data-type="deposit"].active{color:var(--red)}.type-btn[data-type="withdrawal"].active{color:var(--green)}
 .field{margin-bottom:12px}
 .field label{display:block;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px}
 .field input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:16px;-webkit-appearance:none;appearance:none}
@@ -77,34 +80,6 @@ body{background:radial-gradient(ellipse at top,#14201a 0%,transparent 50%),radia
 .footer-actions{margin-top:28px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .footer-btn{background:transparent;border:1px solid var(--border);color:var(--text-faint);font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:8px 14px;border-radius:999px;cursor:pointer}
 .footer-btn:active{color:var(--text);border-color:var(--border-strong)}
-/* Cuentas */
-.global-mini{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:22px}
-.gm-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint)}
-.gm-sub{font-size:11px;color:var(--text-dim);margin-top:4px}
-.gm-total{font-family:var(--display);font-size:30px;font-weight:600;letter-spacing:-.02em;flex-shrink:0}
-.global-mini.positive .gm-total{color:var(--green)}
-.global-mini.negative .gm-total{color:var(--red)}
-.global-mini.neutral .gm-total{color:var(--text-dim)}
-.acct-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px}
-.acct-card.positive{border-color:#1f3a2a}
-.acct-card.negative{border-color:#3a1f1f}
-.acct-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
-.acct-name{background:transparent;border:none;color:var(--text);font-family:var(--display);font-size:18px;font-weight:600;text-align:left;cursor:pointer;padding:0;display:flex;align-items:center;gap:7px;min-width:0}
-.acct-name .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.acct-name .edit-ic{font-size:11px;color:var(--text-faint);font-family:var(--mono);flex-shrink:0}
-.acct-net{font-family:var(--display);font-size:24px;font-weight:600;flex-shrink:0;letter-spacing:-.01em}
-.acct-card.positive .acct-net{color:var(--green)}
-.acct-card.negative .acct-net{color:var(--red)}
-.acct-card.neutral .acct-net{color:var(--text-dim)}
-.tx-chips{display:flex;flex-wrap:wrap;gap:6px}
-.tx-chip{font-family:var(--mono);font-size:13px;font-weight:500;padding:6px 11px;border-radius:8px;border:1px solid var(--border);cursor:pointer;background:var(--bg)}
-.tx-chip.win{color:var(--green);background:var(--green-soft);border-color:#1f3a2a}
-.tx-chip.loss{color:var(--red);background:var(--red-soft);border-color:#3a1f1f}
-.tx-empty{font-size:12px;color:var(--text-faint);font-style:italic}
-.quick-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.quick-chip{font-family:var(--mono);font-size:12px;color:var(--text-dim);background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:7px 13px;cursor:pointer}
-.quick-chip:active{border-color:var(--gold);color:var(--text)}
-/* Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
 .modal-overlay.active{display:flex}
 .modal{background:var(--bg-card);border:1px solid var(--border-strong);border-radius:16px;padding:24px;max-width:360px;width:100%}
@@ -114,16 +89,8 @@ body{background:radial-gradient(ellipse at top,#14201a 0%,transparent 50%),radia
 .modal-btn{flex:1;padding:12px;border-radius:8px;border:none;font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;font-weight:600;cursor:pointer}
 .modal-btn.cancel{background:transparent;border:1px solid var(--border-strong);color:var(--text)}
 .modal-btn.confirm{background:var(--red);color:var(--bg)}
-.modal-btn.primary{background:var(--text);color:var(--bg)}
-.modal-btn.danger{background:transparent;border:1px solid var(--red);color:var(--red);width:100%;margin-top:8px}
-.mtoggle{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--bg);padding:4px;border-radius:10px;margin-bottom:14px;border:1px solid var(--border)}
-.mtoggle-btn{background:transparent;border:none;color:var(--text-dim);font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:10px;border-radius:7px;cursor:pointer;font-weight:500}
-.mtoggle-btn.active{background:var(--bg-card);color:var(--text);box-shadow:0 1px 0 var(--border-strong)}
-.mtoggle-btn[data-txtype="win"].active{color:var(--green)}
-.mtoggle-btn[data-txtype="loss"].active{color:var(--red)}
 .toast{position:fixed;bottom:max(24px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:var(--bg);padding:12px 20px;border-radius:999px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;opacity:0;transition:all .3s;z-index:200}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
-.accounts-count{font-size:11px;color:var(--text-faint);font-family:var(--mono);font-weight:400}
 </style>
 </head>
 <body>
@@ -133,22 +100,25 @@ body{background:radial-gradient(ellipse at top,#14201a 0%,transparent 50%),radia
 <h1 class="title">Mi <em>balance</em></h1>
 </header>
 
-<div class="tabs">
-<button class="tab active" data-page="balance">Balance</button>
-<button class="tab" data-page="cuentas">Cuentas</button>
-</div>
-
-<!-- ============ PÁGINA BALANCE ============ -->
-<div id="page-balance" class="page active">
 <div id="balanceCard" class="balance-card neutral">
 <div class="balance-label">Balance neto</div>
 <div id="balanceAmount" class="balance-amount">—</div>
 <div id="balanceStatus" class="balance-status"><span class="status-dot"></span><span id="statusText">Sin movimientos</span></div>
 </div>
+
 <div class="stats">
 <div class="stat deposits"><div class="stat-label">Ingresado</div><div id="totalDeposits" class="stat-value">0,00 €</div></div>
 <div class="stat withdrawals"><div class="stat-label">Retirado</div><div id="totalWithdrawals" class="stat-value">0,00 €</div></div>
 </div>
+
+<div class="chart-card">
+<div class="chart-head">
+<span class="chart-title">Evolución del balance</span>
+<span id="chartFinal" class="chart-final neutral"></span>
+</div>
+<div id="chartWrap" class="chart-wrap"></div>
+</div>
+
 <section class="form-section">
 <h2 class="section-title">Nuevo movimiento</h2>
 <div class="form">
@@ -164,8 +134,9 @@ body{background:radial-gradient(ellipse at top,#14201a 0%,transparent 50%),radia
 <button id="addBtn" class="submit">Añadir movimiento</button>
 </div>
 </section>
+
 <section>
-<h2 class="section-title">Historial</h2>
+<h2 class="section-title">Movimientos</h2>
 <div class="filter-bar">
 <button class="filter-btn active" data-filter="all">Todos</button>
 <button class="filter-btn" data-filter="deposit">Ingresos</button>
@@ -173,6 +144,7 @@ body{background:radial-gradient(ellipse at top,#14201a 0%,transparent 50%),radia
 </div>
 <div id="historyList" class="history-list"></div>
 </section>
+
 <div class="footer-actions">
 <button id="exportBtn" class="footer-btn">Exportar CSV</button>
 <button id="backupBtn" class="footer-btn">Copia seguridad</button>
@@ -180,41 +152,9 @@ body{background:radial-gradient(ellipse at top,#14201a 0%,transparent 50%),radia
 <button id="clearBtn" class="footer-btn">Borrar todo</button>
 <input type="file" id="restoreInput" accept=".json" style="display:none">
 </div>
-</div>
-
-<!-- ============ PÁGINA CUENTAS ============ -->
-<div id="page-cuentas" class="page">
-<div id="globalMini" class="global-mini neutral">
-<div>
-<div class="gm-label">Resultado global</div>
-<div id="acctSub" class="gm-sub">0 cuentas</div>
-</div>
-<div id="globalTotal" class="gm-total">0,00 €</div>
-</div>
-
-<section style="margin-bottom:28px">
-<h2 class="section-title">Seguimiento</h2>
-<div id="accountsList"></div>
-</section>
-
-<section class="form-section">
-<h2 class="section-title">Añadir movimiento</h2>
-<div class="form">
-<div id="quickChips" class="quick-chips"></div>
-<div class="type-toggle">
-<button type="button" class="acc-type-btn active" data-acctype="win">↑ Ganancia</button>
-<button type="button" class="acc-type-btn" data-acctype="loss">↓ Pérdida</button>
-</div>
-<div class="field"><label for="accName">Cuenta</label><input type="text" id="accName" placeholder="Botemanía Carlota" autocomplete="off"></div>
-<div class="field"><label for="accAmount">Cantidad (€)</label><input type="number" id="accAmount" step="0.01" min="0" placeholder="50,00" inputmode="decimal"></div>
-<button id="addAccBtn" class="submit">Añadir a la cuenta</button>
-</div>
-</section>
-</div>
 
 </div>
 
-<!-- Confirm modal -->
 <div id="modal" class="modal-overlay">
 <div class="modal">
 <div class="modal-title" id="modalTitle">¿Estás seguro?</div>
@@ -225,69 +165,20 @@ body{background:radial-gradient(ellipse at top,#14201a 0%,transparent 50%),radia
 </div>
 </div>
 </div>
-
-<!-- Tx edit modal -->
-<div id="txModal" class="modal-overlay">
-<div class="modal">
-<div class="modal-title">Editar movimiento</div>
-<div class="mtoggle">
-<button type="button" class="mtoggle-btn" data-txtype="win">↑ Ganancia</button>
-<button type="button" class="mtoggle-btn" data-txtype="loss">↓ Pérdida</button>
-</div>
-<div class="field"><label for="txEditAmount">Cantidad (€)</label><input type="number" id="txEditAmount" step="0.01" min="0" inputmode="decimal"></div>
-<div class="modal-actions">
-<button class="modal-btn cancel" id="txEditCancel">Cancelar</button>
-<button class="modal-btn primary" id="txEditSave">Guardar</button>
-</div>
-<button class="modal-btn danger" id="txEditDelete">Eliminar movimiento</button>
-</div>
-</div>
-
-<!-- Account edit modal -->
-<div id="acctModal" class="modal-overlay">
-<div class="modal">
-<div class="modal-title">Editar cuenta</div>
-<div class="field"><label for="acctEditName">Nombre de la cuenta</label><input type="text" id="acctEditName" autocomplete="off"></div>
-<div class="modal-actions">
-<button class="modal-btn cancel" id="acctEditCancel">Cancelar</button>
-<button class="modal-btn primary" id="acctEditSave">Guardar</button>
-</div>
-<button class="modal-btn danger" id="acctDelete">Eliminar cuenta entera</button>
-</div>
-</div>
-
 <div id="toast" class="toast"></div>
 
 <script>
 const KEY='mi-balance-v1';
-const ACC_KEY='mi-cuentas-v1';
-let entries=[],accounts=[],currentType='deposit',currentFilter='all',accType='win',pendingAction=null;
-let editTx=null,editTxType='win',editAccId=null;
+let entries=[],currentType='deposit',currentFilter='all',pendingAction=null;
 
-/* ===== STORAGE + MIGRACIÓN ===== */
-function migrate(raw){
-if(!Array.isArray(raw))return[];
-if(raw.length&&raw[0]&&Array.isArray(raw[0].tx))return raw;
-const map={},order=[];
-raw.forEach(o=>{
-const key=(o.name||'').trim().toLowerCase();
-if(!map[key]){map[key]={id:o.id||(Date.now()+Math.floor(Math.random()*1e6)),name:o.name||'Cuenta',tx:[]};order.push(key)}
-map[key].tx.push({id:(o.id||Date.now())+Math.floor(Math.random()*1e6),type:o.type==='loss'?'loss':'win',amount:o.amount||0})
-});
-return order.map(k=>map[k]);
-}
-function load(){
-try{const r=localStorage.getItem(KEY);entries=r?JSON.parse(r):[]}catch(e){entries=[]}
-try{const r=localStorage.getItem(ACC_KEY);accounts=migrate(r?JSON.parse(r):[])}catch(e){accounts=[]}
-}
+function load(){try{const r=localStorage.getItem(KEY);entries=r?JSON.parse(r):[]}catch(e){entries=[]}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(entries))}catch(e){toast('Error al guardar')}}
-function saveAcc(){try{localStorage.setItem(ACC_KEY,JSON.stringify(accounts))}catch(e){toast('Error al guardar')}}
 const fmt=n=>new Intl.NumberFormat('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n)+' €';
+const fmtShort=n=>{const a=Math.abs(n);let s;if(a>=1000)s=(n/1000).toFixed(1).replace('.',',')+'k';else s=Math.round(n).toString();return (n>0?'+':n<0?'−':'')+s.replace('-','')+' €'};
 const fmtDate=iso=>new Date(iso).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'});
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 
-/* ===== BALANCE ===== */
 function render(){
 const td=entries.filter(e=>e.type==='deposit').reduce((s,e)=>s+e.amount,0);
 const tw=entries.filter(e=>e.type==='withdrawal').reduce((s,e)=>s+e.amount,0);
@@ -300,8 +191,46 @@ if(entries.length===0){c.classList.add('neutral');a.innerHTML='0,00 €';s.textC
 else if(b>0){c.classList.add('positive');a.innerHTML='<span class="sign">+</span>'+fmt(b);s.textContent='En beneficio'}
 else if(b<0){c.classList.add('negative');a.innerHTML='<span class="sign">−</span>'+fmt(Math.abs(b));s.textContent='En pérdida'}
 else{c.classList.add('neutral');a.innerHTML='0,00 €';s.textContent='Empate técnico'}
+renderChart();
 renderHistory();
 }
+
+function renderChart(){
+const wrap=document.getElementById('chartWrap');
+const finalEl=document.getElementById('chartFinal');
+if(entries.length===0){wrap.innerHTML='<div class="chart-empty">Aún no hay datos.<br>Añade un movimiento para ver la curva.</div>';finalEl.textContent='';finalEl.className='chart-final neutral';return}
+const sorted=entries.slice().sort((a,b)=>new Date(a.date)-new Date(b.date)||a.id-b.id);
+let run=0;const pts=[0];
+sorted.forEach(e=>{run+=e.type==='withdrawal'?e.amount:-e.amount;pts.push(run)});
+const finalV=pts[pts.length-1];
+finalEl.textContent=(finalV>0?'+':finalV<0?'−':'')+fmt(Math.abs(finalV));
+finalEl.className='chart-final '+(finalV>0?'positive':finalV<0?'negative':'neutral');
+const col=finalV>0?'#4ade80':finalV<0?'#f87171':'#8a9690';
+const W=340,H=170,padX=10,padTop=16,padBot=22;
+let min=Math.min(...pts,0),max=Math.max(...pts,0);
+if(min===max){min-=1;max+=1}
+const pad=(max-min)*0.12;min-=pad;max+=pad;
+const n=pts.length-1;
+const X=i=>padX+(i/Math.max(1,n))*(W-2*padX);
+const Y=v=>padTop+(1-(v-min)/(max-min))*(H-padTop-padBot);
+let line='';pts.forEach((v,i)=>{line+=(i===0?'M':'L')+X(i).toFixed(1)+' '+Y(v).toFixed(1)+' '});
+const area=line+'L'+X(n).toFixed(1)+' '+(H-padBot).toFixed(1)+' L'+X(0).toFixed(1)+' '+(H-padBot).toFixed(1)+' Z';
+const zeroY=Y(0).toFixed(1);
+const lx=X(n).toFixed(1),ly=Y(finalV).toFixed(1);
+const svg=`<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+<defs><linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="${col}" stop-opacity="0.28"/>
+<stop offset="100%" stop-color="${col}" stop-opacity="0"/>
+</linearGradient></defs>
+<line x1="${padX}" y1="${zeroY}" x2="${W-padX}" y2="${zeroY}" stroke="#2a3530" stroke-width="1" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"/>
+<path d="${area}" fill="url(#grad)"/>
+<path d="${line}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+<circle cx="${lx}" cy="${ly}" r="4" fill="${col}"/>
+<circle cx="${lx}" cy="${ly}" r="8" fill="${col}" opacity="0.18"/>
+</svg>`;
+wrap.innerHTML=svg;
+}
+
 function renderHistory(){
 const l=document.getElementById('historyList');
 let f=entries.slice();
@@ -331,102 +260,8 @@ showModal('Eliminar movimiento',`${e.site} · ${fmt(e.amount)}. Esta acción no 
 function confirmClearAll(){
 if(entries.length===0){toast('Nada que borrar');return}
 pendingAction=()=>{entries=[];save();render();toast('Todo borrado')};
-showModal('Borrar todos los datos','Vas a eliminar todo el historial de movimientos del Balance. Esta acción no se puede deshacer.');
+showModal('Borrar todos los datos','Vas a eliminar todo el historial. Esta acción no se puede deshacer.');
 }
-
-/* ===== CUENTAS ===== */
-function accNet(a){return a.tx.reduce((s,t)=>s+(t.type==='win'?t.amount:-t.amount),0)}
-function lastAct(a){return a.tx.length?Math.max(...a.tx.map(t=>t.id)):a.id}
-function renderAccounts(){
-const total=accounts.reduce((s,a)=>s+accNet(a),0);
-const gm=document.getElementById('globalMini'),gt=document.getElementById('globalTotal'),sub=document.getElementById('acctSub');
-sub.textContent=accounts.length===1?'1 cuenta':accounts.length+' cuentas';
-gm.classList.remove('positive','negative','neutral');
-if(accounts.length===0){gm.classList.add('neutral');gt.textContent='0,00 €'}
-else if(total>0){gm.classList.add('positive');gt.textContent='+'+fmt(total)}
-else if(total<0){gm.classList.add('negative');gt.textContent='−'+fmt(Math.abs(total))}
-else{gm.classList.add('neutral');gt.textContent='0,00 €'}
-const l=document.getElementById('accountsList');
-if(accounts.length===0){l.innerHTML='<div class="empty">No hay cuentas aún.<br>Añade tu primer movimiento abajo.</div>';renderQuickChips();return}
-const sorted=accounts.slice().sort((x,y)=>lastAct(y)-lastAct(x));
-l.innerHTML=sorted.map(a=>{
-const net=accNet(a);
-const cls=net>0?'positive':net<0?'negative':'neutral';
-const netTxt=net>0?'+'+fmt(net):net<0?'−'+fmt(Math.abs(net)):fmt(0);
-const chips=a.tx.length?a.tx.slice().sort((x,y)=>x.id-y.id).map(t=>`<button class="tx-chip ${t.type}" data-tx="${a.id}|${t.id}">${t.type==='win'?'+':'−'}${fmt(t.amount)}</button>`).join(''):'<span class="tx-empty">Sin movimientos todavía</span>';
-return `<div class="acct-card ${cls}"><div class="acct-head"><button class="acct-name" data-acc="${a.id}"><span class="nm">${esc(a.name)}</span><span class="edit-ic">editar</span></button><div class="acct-net">${netTxt}</div></div><div class="tx-chips">${chips}</div></div>`;
-}).join('');
-l.querySelectorAll('.tx-chip').forEach(b=>b.addEventListener('click',()=>{const[ai,ti]=b.dataset.tx.split('|').map(Number);openTxEdit(ai,ti)}));
-l.querySelectorAll('.acct-name').forEach(b=>b.addEventListener('click',()=>openAcctEdit(parseInt(b.dataset.acc))));
-renderQuickChips();
-}
-function renderQuickChips(){
-const c=document.getElementById('quickChips');
-if(accounts.length===0){c.innerHTML='';return}
-const sorted=accounts.slice().sort((x,y)=>lastAct(y)-lastAct(x));
-c.innerHTML=sorted.map(a=>`<button type="button" class="quick-chip" data-name="${esc(a.name)}">${esc(a.name)}</button>`).join('');
-c.querySelectorAll('.quick-chip').forEach(b=>b.addEventListener('click',()=>{document.getElementById('accName').value=b.dataset.name;document.getElementById('accAmount').focus()}));
-}
-function addTx(){
-const name=document.getElementById('accName').value.trim();
-const amount=parseFloat(document.getElementById('accAmount').value);
-if(!name){toast('Falta el nombre');return}
-if(!amount||amount<=0){toast('Cantidad inválida');return}
-let acc=accounts.find(a=>a.name.trim().toLowerCase()===name.toLowerCase());
-if(!acc){acc={id:Date.now(),name,tx:[]};accounts.push(acc)}
-acc.tx.push({id:Date.now()+Math.floor(Math.random()*1e6),type:accType,amount});
-saveAcc();renderAccounts();
-document.getElementById('accAmount').value='';
-toast(accType==='win'?'Ganancia añadida':'Pérdida añadida');
-}
-/* editar movimiento */
-function openTxEdit(accId,txId){
-const acc=accounts.find(a=>a.id===accId);if(!acc)return;
-const t=acc.tx.find(x=>x.id===txId);if(!t)return;
-editTx={accId,txId};editTxType=t.type;
-document.querySelectorAll('.mtoggle-btn').forEach(b=>b.classList.toggle('active',b.dataset.txtype===t.type));
-document.getElementById('txEditAmount').value=t.amount;
-document.getElementById('txModal').classList.add('active');
-}
-function txSave(){
-if(!editTx)return;
-const acc=accounts.find(a=>a.id===editTx.accId);if(!acc)return;
-const t=acc.tx.find(x=>x.id===editTx.txId);if(!t)return;
-const amount=parseFloat(document.getElementById('txEditAmount').value);
-if(!amount||amount<=0){toast('Cantidad inválida');return}
-t.amount=amount;t.type=editTxType;
-saveAcc();renderAccounts();closeTxModal();toast('Movimiento actualizado');
-}
-function txDelete(){
-if(!editTx)return;
-const acc=accounts.find(a=>a.id===editTx.accId);if(!acc)return;
-acc.tx=acc.tx.filter(x=>x.id!==editTx.txId);
-saveAcc();renderAccounts();closeTxModal();toast('Movimiento eliminado');
-}
-function closeTxModal(){document.getElementById('txModal').classList.remove('active');editTx=null}
-/* editar cuenta */
-function openAcctEdit(accId){
-const acc=accounts.find(a=>a.id===accId);if(!acc)return;
-editAccId=accId;
-document.getElementById('acctEditName').value=acc.name;
-document.getElementById('acctModal').classList.add('active');
-}
-function acctSave(){
-const acc=accounts.find(a=>a.id===editAccId);if(!acc)return;
-const name=document.getElementById('acctEditName').value.trim();
-if(!name){toast('Falta el nombre');return}
-acc.name=name;saveAcc();renderAccounts();closeAcctModal();toast('Cuenta actualizada');
-}
-function acctDeleteWhole(){
-const acc=accounts.find(a=>a.id===editAccId);if(!acc)return;
-const id=editAccId;const nm=acc.name;
-closeAcctModal();
-pendingAction=()=>{accounts=accounts.filter(a=>a.id!==id);saveAcc();renderAccounts();toast('Cuenta eliminada')};
-showModal('Eliminar cuenta',`Vas a eliminar "${nm}" y todos sus movimientos. Esta acción no se puede deshacer.`);
-}
-function closeAcctModal(){document.getElementById('acctModal').classList.remove('active');editAccId=null}
-
-/* ===== EXPORT / BACKUP ===== */
 function exportCSV(){
 if(entries.length===0){toast('Nada que exportar');return}
 const h='Fecha,Tipo,Casa,Cantidad\n';
@@ -435,8 +270,8 @@ download(h+r,`balance-${new Date().toISOString().slice(0,10)}.csv`,'text/csv;cha
 toast('CSV descargado');
 }
 function backupJSON(){
-if(entries.length===0&&accounts.length===0){toast('Nada que respaldar');return}
-download(JSON.stringify({version:3,exportedAt:new Date().toISOString(),entries,accounts},null,2),`backup-balance-${new Date().toISOString().slice(0,10)}.json`,'application/json');
+if(entries.length===0){toast('Nada que respaldar');return}
+download(JSON.stringify({version:3,exportedAt:new Date().toISOString(),entries},null,2),`backup-balance-${new Date().toISOString().slice(0,10)}.json`,'application/json');
 toast('Copia guardada');
 }
 function download(c,f,m){
@@ -449,32 +284,18 @@ r.onload=e=>{
 try{
 const d=JSON.parse(e.target.result);
 if(!Array.isArray(d.entries))throw new Error();
-const accMig=migrate(Array.isArray(d.accounts)?d.accounts:[]);
-pendingAction=()=>{entries=d.entries;accounts=accMig;save();saveAcc();render();renderAccounts();toast('Datos restaurados')};
-showModal('Restaurar copia',`Vas a importar ${d.entries.length} movimientos y ${accMig.length} cuentas. Esto reemplazará tus datos actuales.`);
+pendingAction=()=>{entries=d.entries;save();render();toast('Datos restaurados')};
+showModal('Restaurar copia',`Vas a importar ${d.entries.length} movimientos. Esto reemplazará tus datos actuales.`);
 }catch(err){toast('Archivo inválido')}
 };
 r.readAsText(file);
 }
-
-/* ===== CONFIRM MODAL ===== */
 function showModal(t,x){document.getElementById('modalTitle').textContent=t;document.getElementById('modalText').textContent=x;document.getElementById('modal').classList.add('active')}
 function hideModal(){document.getElementById('modal').classList.remove('active');pendingAction=null}
 
-/* ===== EVENTS ===== */
-document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
-document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-t.classList.add('active');
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.getElementById('page-'+t.dataset.page).classList.add('active');
-window.scrollTo(0,0);
-}));
 document.querySelectorAll('.type-btn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.type-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentType=b.dataset.type}));
-document.querySelectorAll('.acc-type-btn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.acc-type-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');accType=b.dataset.acctype}));
-document.querySelectorAll('.mtoggle-btn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.mtoggle-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');editTxType=b.dataset.txtype}));
 document.querySelectorAll('.filter-btn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentFilter=b.dataset.filter;renderHistory()}));
 document.getElementById('addBtn').addEventListener('click',addEntry);
-document.getElementById('addAccBtn').addEventListener('click',addTx);
 document.getElementById('exportBtn').addEventListener('click',exportCSV);
 document.getElementById('backupBtn').addEventListener('click',backupJSON);
 document.getElementById('clearBtn').addEventListener('click',confirmClearAll);
@@ -483,18 +304,9 @@ document.getElementById('restoreInput').addEventListener('change',e=>{if(e.targe
 document.getElementById('modalCancel').addEventListener('click',hideModal);
 document.getElementById('modalConfirm').addEventListener('click',()=>{if(pendingAction)pendingAction();hideModal()});
 document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')hideModal()});
-document.getElementById('txEditSave').addEventListener('click',txSave);
-document.getElementById('txEditDelete').addEventListener('click',txDelete);
-document.getElementById('txEditCancel').addEventListener('click',closeTxModal);
-document.getElementById('txModal').addEventListener('click',e=>{if(e.target.id==='txModal')closeTxModal()});
-document.getElementById('acctEditSave').addEventListener('click',acctSave);
-document.getElementById('acctDelete').addEventListener('click',acctDeleteWhole);
-document.getElementById('acctEditCancel').addEventListener('click',closeAcctModal);
-document.getElementById('acctModal').addEventListener('click',e=>{if(e.target.id==='acctModal')closeAcctModal()});
 ['site','amount','date'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')addEntry()}));
-['accName','accAmount'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')addTx()}));
 document.getElementById('date').valueAsDate=new Date();
-load();saveAcc();render();renderAccounts();
+load();render();
 </script>
 </body>
 </html>
