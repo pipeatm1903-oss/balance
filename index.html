@@ -19,10 +19,15 @@
 html,body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:14px;min-height:100vh;-webkit-font-smoothing:antialiased}
 body{background:radial-gradient(ellipse at top,#14201a 0%,transparent 50%),radial-gradient(ellipse at bottom right,#1a1410 0%,transparent 50%),var(--bg);background-attachment:fixed;padding:max(24px,env(safe-area-inset-top)) 16px max(100px,env(safe-area-inset-bottom))}
 .container{max-width:720px;margin:0 auto}
-.header{margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:20px}
+.header{margin-bottom:20px}
 .eyebrow{font-size:11px;letter-spacing:.2em;color:var(--text-faint);text-transform:uppercase;margin-bottom:8px}
 .title{font-family:var(--display);font-weight:800;font-size:clamp(32px,7vw,48px);line-height:.95;letter-spacing:-.02em}
 .title em{font-style:italic;font-weight:400;color:var(--gold)}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--bg-card);padding:5px;border-radius:12px;margin-bottom:24px;border:1px solid var(--border)}
+.tab{background:transparent;border:none;color:var(--text-dim);font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:12px;border-radius:8px;cursor:pointer;transition:all .2s;font-weight:500}
+.tab.active{background:var(--text);color:var(--bg);font-weight:600}
+.page{display:none}
+.page.active{display:block}
 .balance-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:28px 24px;margin-bottom:16px;position:relative;overflow:hidden}
 .balance-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,currentColor 200%);opacity:.04;pointer-events:none}
 .balance-card.positive{color:var(--green)}.balance-card.negative{color:var(--red)}.balance-card.neutral{color:var(--text-dim)}
@@ -31,12 +36,17 @@ body{background:radial-gradient(ellipse at top,#14201a 0%,transparent 50%),radia
 .balance-amount .sign{font-style:italic;font-weight:400;margin-right:4px}
 .balance-status{margin-top:10px;font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:8px}
 .status-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.session{margin-top:20px;padding-top:18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.session-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px}
+.session-value{font-family:var(--display);font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1}
+.session-value.positive{color:var(--green)}.session-value.negative{color:var(--red)}.session-value.neutral{color:var(--text-dim)}
+.session-btn{background:transparent;border:1px solid var(--border-strong);color:var(--text);font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;padding:9px 12px;border-radius:999px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.session-btn:active{background:var(--bg)}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 .stat{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:16px 14px}
 .stat-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px}
 .stat-value{font-family:var(--display);font-size:22px;font-weight:600;letter-spacing:-.01em}
 .stat.deposits .stat-value{color:var(--red)}.stat.withdrawals .stat-value{color:var(--green)}
-/* Gráfica */
 .chart-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:18px 14px 10px;margin-bottom:26px;overflow:hidden}
 .chart-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;padding:0 4px}
 .chart-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint)}
@@ -80,6 +90,32 @@ svg.chart{width:100%;height:170px;display:block}
 .footer-actions{margin-top:28px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .footer-btn{background:transparent;border:1px solid var(--border);color:var(--text-faint);font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:8px 14px;border-radius:999px;cursor:pointer}
 .footer-btn:active{color:var(--text);border-color:var(--border-strong)}
+/* Bonos */
+.bonus-summary{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:20px 22px;margin-bottom:24px}
+.bs-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:14px}
+.bs-row:last-child{margin-bottom:0}
+.bs-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint)}
+.bs-big{font-family:var(--display);font-size:34px;font-weight:600;color:var(--green);letter-spacing:-.02em;line-height:1}
+.bs-sub{font-family:var(--display);font-size:18px;font-weight:600;color:var(--text)}
+.bs-pending{color:var(--gold)}
+.bs-bar{height:8px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border);margin-top:4px}
+.bs-bar-fill{height:100%;background:var(--green);border-radius:999px;transition:width .3s}
+.bs-count{font-size:11px;color:var(--text-dim);margin-top:8px}
+.phase-title{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-.01em;margin:24px 0 6px;display:flex;align-items:baseline;gap:10px}
+.phase-title:first-child{margin-top:0}
+.phase-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.phase-desc{font-size:12px;color:var(--text-dim);line-height:1.5;margin-bottom:14px}
+.bonus-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;transition:opacity .2s}
+.bonus-card.done{opacity:.5}
+.bonus-main{flex:1;min-width:0}
+.bonus-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px}
+.bonus-name{font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:-.01em}
+.bonus-gain{font-family:var(--display);font-size:16px;font-weight:600;color:var(--green);flex-shrink:0}
+.bonus-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.bonus-tag{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:4px 9px}
+.bonus-desc{font-size:12.5px;color:var(--text-dim);line-height:1.55}
+.bonus-check{width:30px;height:30px;border-radius:9px;border:1.5px solid var(--border-strong);background:var(--bg);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:transparent;font-size:16px;font-weight:700;transition:all .15s}
+.bonus-card.done .bonus-check{background:var(--green);border-color:var(--green);color:var(--bg)}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
 .modal-overlay.active{display:flex}
 .modal{background:var(--bg-card);border:1px solid var(--border-strong);border-radius:16px;padding:24px;max-width:360px;width:100%}
@@ -100,10 +136,24 @@ svg.chart{width:100%;height:170px;display:block}
 <h1 class="title">Mi <em>balance</em></h1>
 </header>
 
+<div class="tabs">
+<button class="tab active" data-page="balance">Balance</button>
+<button class="tab" data-page="bonos">Bonos</button>
+</div>
+
+<!-- ============ PÁGINA BALANCE ============ -->
+<div id="page-balance" class="page active">
 <div id="balanceCard" class="balance-card neutral">
-<div class="balance-label">Balance neto</div>
+<div class="balance-label">Balance neto total</div>
 <div id="balanceAmount" class="balance-amount">—</div>
 <div id="balanceStatus" class="balance-status"><span class="status-dot"></span><span id="statusText">Sin movimientos</span></div>
+<div class="session">
+<div>
+<div class="session-label">Balance desde tu marca</div>
+<div id="sessionValue" class="session-value neutral">—</div>
+</div>
+<button id="anchorBtn" class="session-btn">Marcar ahora</button>
+</div>
 </div>
 
 <div class="stats">
@@ -152,6 +202,26 @@ svg.chart{width:100%;height:170px;display:block}
 <button id="clearBtn" class="footer-btn">Borrar todo</button>
 <input type="file" id="restoreInput" accept=".json" style="display:none">
 </div>
+</div>
+
+<!-- ============ PÁGINA BONOS ============ -->
+<div id="page-bonos" class="page">
+<div class="bonus-summary">
+<div class="bs-row">
+<div>
+<div class="bs-label">Conseguido</div>
+<div id="bsGot" class="bs-big">0,00 €</div>
+</div>
+<div style="text-align:right">
+<div class="bs-label">Pendiente</div>
+<div id="bsPending" class="bs-sub bs-pending">0,00 €</div>
+</div>
+</div>
+<div class="bs-bar"><div id="bsBar" class="bs-bar-fill" style="width:0%"></div></div>
+<div id="bsCount" class="bs-count">0 de 0 bonos · potencial total 0,00 €</div>
+</div>
+<div id="bonosList"></div>
+</div>
 
 </div>
 
@@ -169,16 +239,57 @@ svg.chart{width:100%;height:170px;display:block}
 
 <script>
 const KEY='mi-balance-v1';
-let entries=[],currentType='deposit',currentFilter='all',pendingAction=null;
+const ANCHOR_KEY='mi-balance-anchor';
+const BONOS_KEY='mi-bonos-hechos';
+let entries=[],currentType='deposit',currentFilter='all',pendingAction=null,anchor=null,bonosHechos={};
 
-function load(){try{const r=localStorage.getItem(KEY);entries=r?JSON.parse(r):[]}catch(e){entries=[]}}
+/* ===== DATOS DE BONOS ===== */
+const BONOS=[
+{id:'betfair',name:'Betfair Sportsbook',phase:1,tags:['Apuesta Gratis'],gain:20,desc:'Crea una cuenta nueva con el código ZESG30, deposita y haz una apuesta de 10€ para recibir 30€ en freebet.'},
+{id:'paf',name:'Paf',phase:1,tags:['Apuesta Gratis'],gain:12,desc:'Deposita 10€, apuesta 5€ y gana una freebet de 5€. Luego, los 3 viernes siguientes a tu depósito, apuesta 10€ y gana una freebet de 5€ cada vez.'},
+{id:'speedybet',name:'SpeedyBet',phase:1,tags:['Apuesta Gratis'],gain:15,desc:'Deposita y apuesta 10€ para recibir 5€ en freebets. 7 días después recibirás una nueva promo: apuesta 30€ para ganar 15€ en freebets.'},
+{id:'bet777',name:'Bet777',phase:1,tags:['Apuesta Gratis'],gain:18,desc:'Regístrate, solicita la promo Multifreebet bienvenida, deposita 10€ y apuesta 10€. Al cerrarse, recibirás una freebet de 5€ y durante los 5 días siguientes una freebet adicional de 5€.'},
+{id:'yosports',name:'YoSports',phase:1,tags:['Apuesta Gratis'],gain:20,desc:'Regístrate y realiza 3 depósitos para conseguir 50€ en freebets y tiradas gratis.'},
+{id:'botemania',name:'Botemania',phase:1,tags:['Apuesta Gratis'],gain:35,desc:'Regístrate seleccionando el bono de deportes, deposita y apuesta 10€ para recibir 50€ en freebets.'},
+{id:'monopoly',name:'Monopoly',phase:1,tags:['Apuesta Gratis'],gain:35,desc:'Regístrate seleccionando el bono de deportes, deposita y apuesta 10€ para recibir 50€ en freebets.'},
+{id:'codere',name:'Codere',phase:1,tags:['Apuesta Gratis'],gain:74,desc:'Deposita 200€ y recibes 100€ en apuestas gratis y 100€ de bono de casino (el bono de casino no es rentable).'},
+{id:'marcaapuestas',name:'MarcaApuestas',phase:1,tags:['Apuesta Gratis'],gain:120,desc:'Regístrate, introduce el código y por cada apuesta de 25€ recibes 10€ en freebets. Tendrás que cruzar 500€ para recibir el total de 200€ en apuestas gratis.'},
+{id:'versus',name:'Versus',phase:1,tags:['Apuesta Gratis'],gain:130,desc:'Deposita 100€ y recibes 100€ en freebets. Después realiza un depósito de 200€ y recibes otros 100€ en freebets.'},
+{id:'retabet',name:'Retabet',phase:1,tags:['Apuesta Gratis'],gain:130,desc:'Deposita y apuesta 200€ y recibes 200€ en freebets.'},
+{id:'bet365',name:'Bet365',phase:1,tags:['Apuesta Gratis'],gain:140,desc:'Deposita y apuesta 200€ y recibes 200€ en freebets.'},
+{id:'sportium',name:'Sportium',phase:1,tags:['Apuesta Gratis'],gain:140,desc:'Haz un primer depósito de 100€ y gana 100€ en freebets. Después realiza un segundo depósito de 100€ para ganar otra freebet de 100€.'},
+{id:'daznbet',name:'DaznBet',phase:1,tags:['Apuesta Gratis'],gain:140,desc:'Regístrate, apúntate a la promo y deposita 200€. Apuéstalos e, independientemente del resultado, recibirás una freebet de 200€ (50% en apuesta simple y 50% en combinada).'},
+{id:'ebingo',name:'eBingo',phase:2,tags:['Reembolso'],gain:10,desc:'Apuesta 50€ y, si fallas, recibes 25€ en freebets.'},
+{id:'olybet',name:'OlyBet',phase:2,tags:['Reembolso'],gain:15,desc:'Deposita y apuesta 50€; si fallas, recibes 25€ en freebets. Una semana después, deposita y apuesta otros 50€ con "crea tu apuesta"; si fallas, otros 25€ en freebets.'},
+{id:'casinogm',name:'Casino Gran Madrid',phase:2,tags:['Reembolso'],gain:40,desc:'Deposita y apuesta 200€; si fallas, recibes 100€ en freebets. Las apuestas deben hacerse de miércoles a lunes.'},
+{id:'yaass',name:'YaassCasino',phase:2,tags:['Reembolso'],gain:45,desc:'Deposita 100€ y, si fallas, recibes 100€ en freebets.'},
+{id:'pokerstars',name:'PokerStars',phase:2,tags:['Reembolso'],gain:50,desc:'Regístrate desde el producto de apuestas deportivas, deposita y apuesta 100€; si fallas, recibes 100€ en freebets.'},
+{id:'888sport',name:'888Sport',phase:2,tags:['Apuesta Gratis','Reembolso'],gain:55,desc:'Regístrate y recibe 10€ en freebets. Deposita 100€ y, si fallas, recibes 100€.'},
+{id:'bwin',name:'Bwin',phase:2,tags:['Reembolso'],gain:67.5,desc:'Deposita y apuesta 100€; si fallas, recibes 100€ en freebets.'},
+{id:'juegging',name:'Juegging',phase:2,tags:['Apuesta Gratis','Reembolso'],gain:70,desc:'Regístrate, verifícate y gana 10€ en freebets en 48h. Luego deposita y apuesta 150€ antes de 48h; si fallas, obtienes 150€ en freebets.'},
+{id:'winamax',name:'Winamax',phase:2,tags:['Reembolso'],gain:80,desc:'Deposita y apuesta 100€; si fallas, recibes 150€ en freebets. IMPORTANTE: registro, depósito y todo el proceso desde el mismo dispositivo, o el bono se cancela automáticamente.'},
+{id:'kirolbet',name:'KirolBet',phase:2,tags:['Reembolso','Tiradas Gratis'],gain:90,desc:'Regístrate con el código KB200. Apuesta 200€ y, si fallas, recibes 200€ en freebets y 100 tiradas gratis.'},
+{id:'1xbet',name:'1XBet',phase:2,tags:['Apuesta Gratis'],gain:160,desc:'Deposita y apuesta 100€ para recibir 100€ en freebets. Segundo depósito de 200€ → 100€ freebets. Tercer depósito de 400€ → otros 100€ en freebets.'},
+{id:'admiralbet',name:'AdmiralBet',phase:2,tags:['Apuesta Gratis','Cuota Mejorada'],gain:8.5,desc:'Regístrate y recibe varios premios. Aprovecha la apuesta gratis.'},
+{id:'casumo',name:'Casumo',phase:2,tags:['Reembolso','Avanzado'],gain:15,desc:'Al registrarte selecciona el bono de deportes. Haz una combinada de 50€ y, si fallas, recibes 50€ en freebets para usar en una combinada de cualquier evento deportivo.'}
+];
+
+/* ===== STORAGE ===== */
+function load(){
+try{const r=localStorage.getItem(KEY);entries=r?JSON.parse(r):[]}catch(e){entries=[]}
+try{const r=localStorage.getItem(ANCHOR_KEY);anchor=(r===null||r==='null')?null:parseFloat(r)}catch(e){anchor=null}
+try{const r=localStorage.getItem(BONOS_KEY);bonosHechos=r?JSON.parse(r):{}}catch(e){bonosHechos={}}
+}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(entries))}catch(e){toast('Error al guardar')}}
+function saveAnchor(){try{localStorage.setItem(ANCHOR_KEY,anchor===null?'null':String(anchor))}catch(e){}}
+function saveBonos(){try{localStorage.setItem(BONOS_KEY,JSON.stringify(bonosHechos))}catch(e){}}
 const fmt=n=>new Intl.NumberFormat('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n)+' €';
-const fmtShort=n=>{const a=Math.abs(n);let s;if(a>=1000)s=(n/1000).toFixed(1).replace('.',',')+'k';else s=Math.round(n).toString();return (n>0?'+':n<0?'−':'')+s.replace('-','')+' €'};
 const fmtDate=iso=>new Date(iso).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'});
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function netBalance(){const td=entries.filter(e=>e.type==='deposit').reduce((s,e)=>s+e.amount,0);const tw=entries.filter(e=>e.type==='withdrawal').reduce((s,e)=>s+e.amount,0);return tw-td}
 
+/* ===== BALANCE ===== */
 function render(){
 const td=entries.filter(e=>e.type==='deposit').reduce((s,e)=>s+e.amount,0);
 const tw=entries.filter(e=>e.type==='withdrawal').reduce((s,e)=>s+e.amount,0);
@@ -191,9 +302,20 @@ if(entries.length===0){c.classList.add('neutral');a.innerHTML='0,00 €';s.textC
 else if(b>0){c.classList.add('positive');a.innerHTML='<span class="sign">+</span>'+fmt(b);s.textContent='En beneficio'}
 else if(b<0){c.classList.add('negative');a.innerHTML='<span class="sign">−</span>'+fmt(Math.abs(b));s.textContent='En pérdida'}
 else{c.classList.add('neutral');a.innerHTML='0,00 €';s.textContent='Empate técnico'}
+renderSession(b);
 renderChart();
 renderHistory();
 }
+function renderSession(b){
+const sv=document.getElementById('sessionValue');
+sv.classList.remove('positive','negative','neutral');
+if(anchor===null){sv.classList.add('neutral');sv.textContent='—';return}
+const diff=b-anchor;
+if(diff>0){sv.classList.add('positive');sv.textContent='+'+fmt(diff)}
+else if(diff<0){sv.classList.add('negative');sv.textContent='−'+fmt(Math.abs(diff))}
+else{sv.classList.add('neutral');sv.textContent='0,00 €'}
+}
+function markAnchor(){anchor=netBalance();saveAnchor();renderSession(netBalance());toast('Punto marcado a cero')}
 
 function renderChart(){
 const wrap=document.getElementById('chartWrap');
@@ -260,8 +382,37 @@ showModal('Eliminar movimiento',`${e.site} · ${fmt(e.amount)}. Esta acción no 
 function confirmClearAll(){
 if(entries.length===0){toast('Nada que borrar');return}
 pendingAction=()=>{entries=[];save();render();toast('Todo borrado')};
-showModal('Borrar todos los datos','Vas a eliminar todo el historial. Esta acción no se puede deshacer.');
+showModal('Borrar todos los datos','Vas a eliminar todo el historial de movimientos. Esta acción no se puede deshacer.');
 }
+
+/* ===== BONOS ===== */
+function renderBonos(){
+const got=BONOS.filter(b=>bonosHechos[b.id]).reduce((s,b)=>s+b.gain,0);
+const totalPot=BONOS.reduce((s,b)=>s+b.gain,0);
+const pending=totalPot-got;
+const doneCount=BONOS.filter(b=>bonosHechos[b.id]).length;
+document.getElementById('bsGot').textContent='+'+fmt(got);
+document.getElementById('bsPending').textContent=fmt(pending);
+document.getElementById('bsBar').style.width=(totalPot>0?(got/totalPot*100):0).toFixed(1)+'%';
+document.getElementById('bsCount').textContent=`${doneCount} de ${BONOS.length} bonos · potencial total ${fmt(totalPot)}`;
+const list=document.getElementById('bonosList');
+const fase1=BONOS.filter(b=>b.phase===1),fase2=BONOS.filter(b=>b.phase===2);
+const card=b=>`<div class="bonus-card ${bonosHechos[b.id]?'done':''}" data-bonus="${b.id}"><div class="bonus-main"><div class="bonus-top"><span class="bonus-name">${esc(b.name)}</span><span class="bonus-gain">+${fmt(b.gain)}</span></div><div class="bonus-tags">${b.tags.map(t=>`<span class="bonus-tag">${esc(t)}</span>`).join('')}</div><div class="bonus-desc">${esc(b.desc)}</div></div><button class="bonus-check" data-check="${b.id}">✓</button></div>`;
+list.innerHTML=
+'<div class="phase-title">Fase 1 · Apuestas gratis</div>'+
+'<div class="phase-desc">Bonos en los que apuestas y te devuelven el importe en freebets. Los más sencillos para empezar.</div>'+
+fase1.map(card).join('')+
+'<div class="phase-title">Fase 2 · Reembolso</div>'+
+'<div class="phase-desc">Bonos de reembolso: si tu apuesta falla, te devuelven dinero en freebets.</div>'+
+fase2.map(card).join('');
+list.querySelectorAll('.bonus-check').forEach(btn=>btn.addEventListener('click',()=>toggleBono(btn.dataset.check)));
+}
+function toggleBono(id){
+if(bonosHechos[id])delete bonosHechos[id];else bonosHechos[id]=true;
+saveBonos();renderBonos();
+}
+
+/* ===== EXPORT / BACKUP ===== */
 function exportCSV(){
 if(entries.length===0){toast('Nada que exportar');return}
 const h='Fecha,Tipo,Casa,Cantidad\n';
@@ -270,8 +421,8 @@ download(h+r,`balance-${new Date().toISOString().slice(0,10)}.csv`,'text/csv;cha
 toast('CSV descargado');
 }
 function backupJSON(){
-if(entries.length===0){toast('Nada que respaldar');return}
-download(JSON.stringify({version:3,exportedAt:new Date().toISOString(),entries},null,2),`backup-balance-${new Date().toISOString().slice(0,10)}.json`,'application/json');
+if(entries.length===0&&Object.keys(bonosHechos).length===0){toast('Nada que respaldar');return}
+download(JSON.stringify({version:4,exportedAt:new Date().toISOString(),entries,anchor,bonosHechos},null,2),`backup-balance-${new Date().toISOString().slice(0,10)}.json`,'application/json');
 toast('Copia guardada');
 }
 function download(c,f,m){
@@ -284,7 +435,7 @@ r.onload=e=>{
 try{
 const d=JSON.parse(e.target.result);
 if(!Array.isArray(d.entries))throw new Error();
-pendingAction=()=>{entries=d.entries;save();render();toast('Datos restaurados')};
+pendingAction=()=>{entries=d.entries;anchor=(d.anchor===undefined?null:d.anchor);bonosHechos=d.bonosHechos||{};save();saveAnchor();saveBonos();render();renderBonos();toast('Datos restaurados')};
 showModal('Restaurar copia',`Vas a importar ${d.entries.length} movimientos. Esto reemplazará tus datos actuales.`);
 }catch(err){toast('Archivo inválido')}
 };
@@ -293,9 +444,18 @@ r.readAsText(file);
 function showModal(t,x){document.getElementById('modalTitle').textContent=t;document.getElementById('modalText').textContent=x;document.getElementById('modal').classList.add('active')}
 function hideModal(){document.getElementById('modal').classList.remove('active');pendingAction=null}
 
+/* ===== EVENTS ===== */
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+t.classList.add('active');
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.getElementById('page-'+t.dataset.page).classList.add('active');
+window.scrollTo(0,0);
+}));
 document.querySelectorAll('.type-btn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.type-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentType=b.dataset.type}));
 document.querySelectorAll('.filter-btn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentFilter=b.dataset.filter;renderHistory()}));
 document.getElementById('addBtn').addEventListener('click',addEntry);
+document.getElementById('anchorBtn').addEventListener('click',markAnchor);
 document.getElementById('exportBtn').addEventListener('click',exportCSV);
 document.getElementById('backupBtn').addEventListener('click',backupJSON);
 document.getElementById('clearBtn').addEventListener('click',confirmClearAll);
@@ -306,7 +466,7 @@ document.getElementById('modalConfirm').addEventListener('click',()=>{if(pending
 document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')hideModal()});
 ['site','amount','date'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')addEntry()}));
 document.getElementById('date').valueAsDate=new Date();
-load();render();
+load();render();renderBonos();
 </script>
 </body>
 </html>
