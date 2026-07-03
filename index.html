@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0e0c;--bg-card:#161c19;--border:#1f2622;--border-strong:#2a3530;--text:#e8efe9;--text-dim:#8a9690;--text-faint:#515a55;--green:#4ade80;--green-soft:#4ade8015;--red:#f87171;--red-soft:#f8717115;--gold:#d4a574;--display:'Fraunces',serif;--mono:'JetBrains Mono',monospace}
+:root{--bg:#0a0e0c;--bg-card:#161c19;--border:#1f2622;--border-strong:#2a3530;--text:#e8efe9;--text-dim:#8a9690;--text-faint:#515a55;--green:#4ade80;--green-soft:#4ade8015;--red:#f87171;--red-soft:#f8717115;--gold:#d4a574;--gold-soft:#d4a57415;--display:'Fraunces',serif;--mono:'JetBrains Mono',monospace}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:14px;min-height:100vh;-webkit-font-smoothing:antialiased}
 body{background:radial-gradient(ellipse at top,#14201a 0%,transparent 50%),radial-gradient(ellipse at bottom right,#1a1410 0%,transparent 50%),var(--bg);background-attachment:fixed;padding:max(24px,env(safe-area-inset-top)) 16px max(100px,env(safe-area-inset-bottom))}
@@ -28,81 +28,87 @@ body{background:radial-gradient(ellipse at top,#14201a 0%,transparent 50%),radia
 .tab.active{background:var(--text);color:var(--bg);font-weight:600}
 .page{display:none}
 .page.active{display:block}
-.balance-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:28px 24px;margin-bottom:16px;position:relative;overflow:hidden}
+.balance-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:26px 24px;margin-bottom:14px;position:relative;overflow:hidden}
 .balance-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,currentColor 200%);opacity:.04;pointer-events:none}
 .balance-card.positive{color:var(--green)}.balance-card.negative{color:var(--red)}.balance-card.neutral{color:var(--text-dim)}
+.salida-pill{position:absolute;top:14px;right:14px;background:var(--bg);border:1px solid var(--border-strong);border-radius:999px;padding:6px 11px;font-size:10px;letter-spacing:.08em;color:var(--text-dim);cursor:pointer;z-index:2;font-family:var(--mono)}
+.salida-pill b{color:var(--gold);font-weight:600}
 .balance-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-faint);margin-bottom:12px}
-.balance-amount{font-family:var(--display);font-weight:600;font-size:clamp(40px,9vw,56px);letter-spacing:-.03em;line-height:1}
+.balance-amount{font-family:var(--display);font-weight:600;font-size:clamp(38px,8.5vw,54px);letter-spacing:-.03em;line-height:1}
 .balance-amount .sign{font-style:italic;font-weight:400;margin-right:4px}
-.balance-status{margin-top:10px;font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:8px}
-.status-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
-.session{margin-top:20px;padding-top:18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
-.session-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px}
-.session-value{font-family:var(--display);font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1}
-.session-value.positive{color:var(--green)}.session-value.negative{color:var(--red)}.session-value.neutral{color:var(--text-dim)}
-.session-btn{background:transparent;border:1px solid var(--border-strong);color:var(--text);font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;padding:9px 12px;border-radius:999px;cursor:pointer;white-space:nowrap;flex-shrink:0}
-.session-btn:active{background:var(--bg)}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.stat{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:16px 14px}
-.stat-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px}
-.stat-value{font-family:var(--display);font-size:22px;font-weight:600;letter-spacing:-.01em}
-.stat.deposits .stat-value{color:var(--red)}.stat.withdrawals .stat-value{color:var(--green)}
-.chart-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:18px 14px 10px;margin-bottom:26px;overflow:hidden}
+.balance-sub{margin-top:10px;font-size:12px;color:var(--text-dim)}
+.balance-sub b{color:var(--text)}
+.progress-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:12px}
+.pc-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px}
+.pc-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint)}
+.pc-val{font-family:var(--display);font-size:18px;font-weight:600;color:var(--green)}
+.pc-val.neg{color:var(--red)}
+.pc-bar{height:10px;background:var(--bg);border:1px solid var(--border);border-radius:999px;overflow:hidden}
+.pc-bar-fill{height:100%;background:var(--green);border-radius:999px;transition:width .3s}
+.pc-note{font-size:11.5px;color:var(--text-dim);margin-top:10px;line-height:1.5}
+.pc-note b{color:var(--gold);font-weight:600}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+.stat{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:15px 14px}
+.stat-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px}
+.stat-value{font-family:var(--display);font-size:21px;font-weight:600;letter-spacing:-.01em}
+.stat.resultado .stat-value{color:var(--text)}
+.stat.comision .stat-value{color:var(--gold)}
+.stat.pagado .stat-value{color:var(--text-dim)}
+.stat.pendiente .stat-value{color:var(--gold)}
+.stat.pendiente.clear .stat-value{color:var(--green)}
+.chart-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:18px 14px 12px;margin-bottom:26px;overflow:hidden}
 .chart-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;padding:0 4px}
 .chart-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint)}
-.chart-final{font-family:var(--display);font-size:15px;font-weight:600}
-.chart-final.positive{color:var(--green)}.chart-final.negative{color:var(--red)}.chart-final.neutral{color:var(--text-dim)}
+.chart-final{font-family:var(--display);font-size:15px;font-weight:600;color:var(--green)}
 .chart-wrap{width:100%}
-svg.chart{width:100%;height:170px;display:block}
+svg.chart{width:100%;height:190px;display:block}
 .chart-empty{text-align:center;padding:34px 10px;color:var(--text-faint);font-style:italic;font-family:var(--display);font-size:15px}
 .form-section{margin-bottom:28px}
 .section-title{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-.01em;margin-bottom:14px;display:flex;align-items:baseline;gap:10px}
 .section-title::after{content:'';flex:1;height:1px;background:var(--border)}
 .form{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:18px}
-.type-toggle{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--bg);padding:4px;border-radius:10px;margin-bottom:14px;border:1px solid var(--border)}
-.type-btn{background:transparent;border:none;color:var(--text-dim);font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:10px;border-radius:7px;cursor:pointer;transition:all .2s;font-weight:500}
+.type-toggle{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;background:var(--bg);padding:4px;border-radius:10px;margin-bottom:14px;border:1px solid var(--border)}
+.type-btn{background:transparent;border:none;color:var(--text-dim);font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:10px 6px;border-radius:7px;cursor:pointer;transition:all .2s;font-weight:500}
 .type-btn.active{background:var(--bg-card);color:var(--text);box-shadow:0 1px 0 var(--border-strong)}
-.type-btn[data-type="deposit"].active{color:var(--red)}.type-btn[data-type="withdrawal"].active{color:var(--green)}
+.type-btn[data-type="gain"].active{color:var(--green)}
+.type-btn[data-type="loss"].active{color:var(--red)}
+.type-btn[data-type="payment"].active{color:var(--gold)}
 .field{margin-bottom:12px}
 .field label{display:block;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px}
 .field input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:16px;-webkit-appearance:none;appearance:none}
 .field input:focus{outline:none;border-color:var(--gold)}
 .field input::placeholder{color:var(--text-faint)}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hint{background:var(--bg);border:1px dashed var(--border-strong);border-radius:8px;padding:11px 13px;margin-bottom:12px;font-size:12px;color:var(--text-dim);line-height:1.5}
+.hint b{color:var(--gold);font-weight:600}
 .submit{width:100%;background:var(--text);color:var(--bg);border:none;border-radius:8px;padding:14px;font-family:var(--mono);font-size:12px;letter-spacing:.15em;text-transform:uppercase;font-weight:600;cursor:pointer;margin-top:4px}
 .submit:active{transform:scale(.98)}
-.filter-bar{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
-.filter-btn{background:var(--bg-card);border:1px solid var(--border);color:var(--text-dim);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap}
-.filter-btn.active{background:var(--text);color:var(--bg);border-color:var(--text)}
 .history-list{display:flex;flex-direction:column;gap:8px}
 .empty{text-align:center;padding:40px 20px;color:var(--text-faint);font-style:italic;font-family:var(--display)}
 .entry{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:14px}
-.entry-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:20px;font-weight:600;flex-shrink:0}
-.entry.deposit .entry-icon{background:var(--red-soft);color:var(--red)}
-.entry.withdrawal .entry-icon{background:var(--green-soft);color:var(--green)}
+.entry-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:19px;font-weight:600;flex-shrink:0}
+.entry.gain .entry-icon{background:var(--green-soft);color:var(--green)}
+.entry.loss .entry-icon{background:var(--red-soft);color:var(--red)}
+.entry.payment .entry-icon{background:var(--gold-soft);color:var(--gold)}
 .entry-info{flex:1;min-width:0}
 .entry-site{font-size:14px;color:var(--text);font-weight:500;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.entry-meta{font-size:11px;color:var(--text-faint);letter-spacing:.05em}
+.entry-meta{font-size:11px;color:var(--text-faint);letter-spacing:.03em}
 .entry-amount{font-family:var(--display);font-size:18px;font-weight:600;letter-spacing:-.01em;text-align:right}
-.entry.deposit .entry-amount{color:var(--red)}.entry.withdrawal .entry-amount{color:var(--green)}
+.entry.gain .entry-amount{color:var(--green)}.entry.loss .entry-amount{color:var(--red)}.entry.payment .entry-amount{color:var(--gold)}
 .entry-delete{background:transparent;border:none;color:var(--text-faint);cursor:pointer;font-size:22px;padding:4px 8px;line-height:1}
 .entry-delete:active{color:var(--red)}
 .footer-actions{margin-top:28px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .footer-btn{background:transparent;border:1px solid var(--border);color:var(--text-faint);font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:8px 14px;border-radius:999px;cursor:pointer}
 .footer-btn:active{color:var(--text);border-color:var(--border-strong)}
-/* Bonos */
 .bonus-summary{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:20px 22px;margin-bottom:24px}
 .bs-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:14px}
-.bs-row:last-child{margin-bottom:0}
 .bs-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint)}
 .bs-big{font-family:var(--display);font-size:34px;font-weight:600;color:var(--green);letter-spacing:-.02em;line-height:1}
-.bs-sub{font-family:var(--display);font-size:18px;font-weight:600;color:var(--text)}
-.bs-pending{color:var(--gold)}
+.bs-sub{font-family:var(--display);font-size:18px;font-weight:600;color:var(--gold)}
 .bs-bar{height:8px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border);margin-top:4px}
 .bs-bar-fill{height:100%;background:var(--green);border-radius:999px;transition:width .3s}
 .bs-count{font-size:11px;color:var(--text-dim);margin-top:8px}
 .phase-title{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-.01em;margin:24px 0 6px;display:flex;align-items:baseline;gap:10px}
-.phase-title:first-child{margin-top:0}
 .phase-title::after{content:'';flex:1;height:1px;background:var(--border)}
 .phase-desc{font-size:12px;color:var(--text-dim);line-height:1.5;margin-bottom:14px}
 .bonus-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;transition:opacity .2s}
@@ -125,14 +131,15 @@ svg.chart{width:100%;height:170px;display:block}
 .modal-btn{flex:1;padding:12px;border-radius:8px;border:none;font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;font-weight:600;cursor:pointer}
 .modal-btn.cancel{background:transparent;border:1px solid var(--border-strong);color:var(--text)}
 .modal-btn.confirm{background:var(--red);color:var(--bg)}
-.toast{position:fixed;bottom:max(24px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:var(--bg);padding:12px 20px;border-radius:999px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;opacity:0;transition:all .3s;z-index:200}
+.modal-btn.primary{background:var(--text);color:var(--bg)}
+.toast{position:fixed;bottom:max(24px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:var(--bg);padding:12px 20px;border-radius:999px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;opacity:0;transition:all .3s;z-index:200;max-width:90%;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 </style>
 </head>
 <body>
 <div class="container">
 <header class="header">
-<div class="eyebrow">Control financiero · Casas de apuestas</div>
+<div class="eyebrow">Cuenta gestionada · Seguimiento</div>
 <h1 class="title">Mi <em>balance</em></h1>
 </header>
 
@@ -141,62 +148,61 @@ svg.chart{width:100%;height:170px;display:block}
 <button class="tab" data-page="bonos">Bonos</button>
 </div>
 
-<!-- ============ PÁGINA BALANCE ============ -->
 <div id="page-balance" class="page active">
 <div id="balanceCard" class="balance-card neutral">
-<div class="balance-label">Balance neto total</div>
+<button id="salidaPill" class="salida-pill">Salida <b id="salidaTxt">−3.000 €</b></button>
+<div class="balance-label">Posición actual</div>
 <div id="balanceAmount" class="balance-amount">—</div>
-<div id="balanceStatus" class="balance-status"><span class="status-dot"></span><span id="statusText">Sin movimientos</span></div>
-<div class="session">
-<div>
-<div class="session-label">Balance desde tu marca</div>
-<div id="sessionValue" class="session-value neutral">—</div>
+<div class="balance-sub" id="balanceSub">Resultado cuenta 0,00 € · comisión 0,00 €</div>
 </div>
-<button id="anchorBtn" class="session-btn">Marcar ahora</button>
+
+<div class="progress-card">
+<div class="pc-top">
+<span class="pc-label">Hacia la próxima comisión</span>
+<span id="pcVal" class="pc-val">0 € / 300 €</span>
 </div>
+<div class="pc-bar"><div id="pcBar" class="pc-bar-fill" style="width:0%"></div></div>
+<div id="pcNote" class="pc-note">Faltan <b>300 €</b> para la próxima comisión de 90 €.</div>
 </div>
 
 <div class="stats">
-<div class="stat deposits"><div class="stat-label">Ingresado</div><div id="totalDeposits" class="stat-value">0,00 €</div></div>
-<div class="stat withdrawals"><div class="stat-label">Retirado</div><div id="totalWithdrawals" class="stat-value">0,00 €</div></div>
+<div class="stat resultado"><div class="stat-label">Resultado cuenta</div><div id="stResultado" class="stat-value">0,00 €</div></div>
+<div class="stat comision"><div class="stat-label">Comisión total (90/tramo)</div><div id="stComision" class="stat-value">0,00 €</div></div>
+<div class="stat pagado"><div class="stat-label">Pagado</div><div id="stPagado" class="stat-value">0,00 €</div></div>
+<div class="stat pendiente" id="stPendienteCard"><div class="stat-label">Pendiente de pagar</div><div id="stPendiente" class="stat-value">0,00 €</div></div>
 </div>
 
 <div class="chart-card">
 <div class="chart-head">
-<span class="chart-title">Evolución del balance</span>
-<span id="chartFinal" class="chart-final neutral"></span>
+<span class="chart-title">Resultado por mes</span>
+<span id="chartFinal" class="chart-final"></span>
 </div>
 <div id="chartWrap" class="chart-wrap"></div>
 </div>
 
 <section class="form-section">
-<h2 class="section-title">Nuevo movimiento</h2>
+<h2 class="section-title">Añadir</h2>
 <div class="form">
 <div class="type-toggle">
-<button type="button" class="type-btn active" data-type="deposit">↓ Ingreso</button>
-<button type="button" class="type-btn" data-type="withdrawal">↑ Retirada</button>
+<button type="button" class="type-btn active" data-type="gain">＋ Ganancia</button>
+<button type="button" class="type-btn" data-type="loss">－ Pérdida</button>
+<button type="button" class="type-btn" data-type="payment">€ Pago</button>
 </div>
-<div class="field"><label for="site">Casa de apuestas</label><input type="text" id="site" placeholder="Botemanía Felipe, Bet365…" autocomplete="off"></div>
 <div class="row">
-<div class="field"><label for="amount">Cantidad (€)</label><input type="number" id="amount" step="0.01" min="0" placeholder="0,00" inputmode="decimal"></div>
+<div class="field"><label for="amount">Cantidad (€)</label><input type="number" id="amount" step="0.01" min="0" placeholder="450,00" inputmode="decimal"></div>
 <div class="field"><label for="date">Fecha</label><input type="date" id="date"></div>
 </div>
-<button id="addBtn" class="submit">Añadir movimiento</button>
+<div id="hint" class="hint"></div>
+<button id="addBtn" class="submit">Añadir ganancia</button>
 </div>
 </section>
 
 <section>
 <h2 class="section-title">Movimientos</h2>
-<div class="filter-bar">
-<button class="filter-btn active" data-filter="all">Todos</button>
-<button class="filter-btn" data-filter="deposit">Ingresos</button>
-<button class="filter-btn" data-filter="withdrawal">Retiradas</button>
-</div>
 <div id="historyList" class="history-list"></div>
 </section>
 
 <div class="footer-actions">
-<button id="exportBtn" class="footer-btn">Exportar CSV</button>
 <button id="backupBtn" class="footer-btn">Copia seguridad</button>
 <button id="restoreBtn" class="footer-btn">Restaurar</button>
 <button id="clearBtn" class="footer-btn">Borrar todo</button>
@@ -204,21 +210,14 @@ svg.chart{width:100%;height:170px;display:block}
 </div>
 </div>
 
-<!-- ============ PÁGINA BONOS ============ -->
 <div id="page-bonos" class="page">
 <div class="bonus-summary">
 <div class="bs-row">
-<div>
-<div class="bs-label">Conseguido</div>
-<div id="bsGot" class="bs-big">0,00 €</div>
-</div>
-<div style="text-align:right">
-<div class="bs-label">Pendiente</div>
-<div id="bsPending" class="bs-sub bs-pending">0,00 €</div>
-</div>
+<div><div class="bs-label">Conseguido</div><div id="bsGot" class="bs-big">0,00 €</div></div>
+<div style="text-align:right"><div class="bs-label">Pendiente</div><div id="bsPending" class="bs-sub">0,00 €</div></div>
 </div>
 <div class="bs-bar"><div id="bsBar" class="bs-bar-fill" style="width:0%"></div></div>
-<div id="bsCount" class="bs-count">0 de 0 bonos · potencial total 0,00 €</div>
+<div id="bsCount" class="bs-count">0 de 0 bonos</div>
 </div>
 <div id="bonosList"></div>
 </div>
@@ -235,15 +234,28 @@ svg.chart{width:100%;height:170px;display:block}
 </div>
 </div>
 </div>
+
+<div id="salidaModal" class="modal-overlay">
+<div class="modal">
+<div class="modal-title">Punto de salida</div>
+<div class="modal-text">¿Desde qué cantidad partes? Normalmente en negativo (ej. −3000).</div>
+<div class="field"><label for="salidaInput">Cantidad (€)</label><input type="number" id="salidaInput" step="0.01" inputmode="decimal"></div>
+<div class="modal-actions">
+<button class="modal-btn cancel" id="salidaCancel">Cancelar</button>
+<button class="modal-btn primary" id="salidaSave">Guardar</button>
+</div>
+</div>
+</div>
+
 <div id="toast" class="toast"></div>
 
 <script>
-const KEY='mi-balance-v1';
-const ANCHOR_KEY='mi-balance-anchor';
+const KEY='mi-gestion-v2';
+const SALIDA_KEY='mi-gestion-salida';
 const BONOS_KEY='mi-bonos-hechos';
-let entries=[],currentType='deposit',currentFilter='all',pendingAction=null,anchor=null,bonosHechos={};
+const BLOCK=300,FEE=90;
+let entries=[],currentType='gain',pendingAction=null,salida=-3000,bonosHechos={};
 
-/* ===== DATOS DE BONOS ===== */
 const BONOS=[
 {id:'betfair',name:'Betfair Sportsbook',phase:1,tags:['Apuesta Gratis'],gain:20,desc:'Crea una cuenta nueva con el código ZESG30, deposita y haz una apuesta de 10€ para recibir 30€ en freebet.'},
 {id:'paf',name:'Paf',phase:1,tags:['Apuesta Gratis'],gain:12,desc:'Deposita 10€, apuesta 5€ y gana una freebet de 5€. Luego, los 3 viernes siguientes a tu depósito, apuesta 10€ y gana una freebet de 5€ cada vez.'},
@@ -274,189 +286,183 @@ const BONOS=[
 {id:'casumo',name:'Casumo',phase:2,tags:['Reembolso','Avanzado'],gain:15,desc:'Al registrarte selecciona el bono de deportes. Haz una combinada de 50€ y, si fallas, recibes 50€ en freebets para usar en una combinada de cualquier evento deportivo.'}
 ];
 
-/* ===== STORAGE ===== */
 function load(){
 try{const r=localStorage.getItem(KEY);entries=r?JSON.parse(r):[]}catch(e){entries=[]}
-try{const r=localStorage.getItem(ANCHOR_KEY);anchor=(r===null||r==='null')?null:parseFloat(r)}catch(e){anchor=null}
+try{const r=localStorage.getItem(SALIDA_KEY);salida=(r===null)?-3000:parseFloat(r)}catch(e){salida=-3000}
 try{const r=localStorage.getItem(BONOS_KEY);bonosHechos=r?JSON.parse(r):{}}catch(e){bonosHechos={}}
 }
 function save(){try{localStorage.setItem(KEY,JSON.stringify(entries))}catch(e){toast('Error al guardar')}}
-function saveAnchor(){try{localStorage.setItem(ANCHOR_KEY,anchor===null?'null':String(anchor))}catch(e){}}
+function saveSalida(){try{localStorage.setItem(SALIDA_KEY,String(salida))}catch(e){}}
 function saveBonos(){try{localStorage.setItem(BONOS_KEY,JSON.stringify(bonosHechos))}catch(e){}}
 const fmt=n=>new Intl.NumberFormat('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n)+' €';
+const fmtSigned=n=>(n>0?'+':n<0?'−':'')+fmt(Math.abs(n));
 const fmtDate=iso=>new Date(iso).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'});
-function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
-function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
-function netBalance(){const td=entries.filter(e=>e.type==='deposit').reduce((s,e)=>s+e.amount,0);const tw=entries.filter(e=>e.type==='withdrawal').reduce((s,e)=>s+e.amount,0);return tw-td}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}
 
-/* ===== BALANCE ===== */
+/* Simula el contador y cuenta cuántos tramos de 300 se han cruzado */
+function simulate(){
+const ordered=entries.filter(e=>e.type==='gain'||e.type==='loss').sort((a,b)=>new Date(a.date)-new Date(b.date)||a.id-b.id);
+let counter=0,blocks=0;
+ordered.forEach(e=>{counter+=e.type==='gain'?e.amount:-e.amount;while(counter>=BLOCK){blocks++;counter-=BLOCK}});
+return {counter,blocks};
+}
+function totals(){
+const sim=simulate();
+const resultado=entries.reduce((s,e)=>s+(e.type==='gain'?e.amount:e.type==='loss'?-e.amount:0),0);
+const comision=sim.blocks*FEE;
+const pagado=entries.filter(e=>e.type==='payment').reduce((s,e)=>s+e.amount,0);
+const pendiente=comision-pagado;
+const posicion=salida+resultado-comision;
+return {resultado,comision,pagado,pendiente,posicion,counter:sim.counter,blocks:sim.blocks};
+}
+
 function render(){
-const td=entries.filter(e=>e.type==='deposit').reduce((s,e)=>s+e.amount,0);
-const tw=entries.filter(e=>e.type==='withdrawal').reduce((s,e)=>s+e.amount,0);
-const b=tw-td;
-document.getElementById('totalDeposits').textContent=fmt(td);
-document.getElementById('totalWithdrawals').textContent=fmt(tw);
-const c=document.getElementById('balanceCard'),a=document.getElementById('balanceAmount'),s=document.getElementById('statusText');
+const t=totals();
+document.getElementById('salidaTxt').textContent=fmtSigned(salida);
+document.getElementById('stResultado').textContent=fmtSigned(t.resultado);
+document.getElementById('stComision').textContent=fmt(t.comision);
+document.getElementById('stPagado').textContent=fmt(t.pagado);
+document.getElementById('stPendiente').textContent=fmt(Math.max(0,t.pendiente));
+const pcard=document.getElementById('stPendienteCard');
+if(t.pendiente<=0.005){pcard.classList.add('clear')}else{pcard.classList.remove('clear')}
+const c=document.getElementById('balanceCard'),a=document.getElementById('balanceAmount');
 c.classList.remove('positive','negative','neutral');
-if(entries.length===0){c.classList.add('neutral');a.innerHTML='0,00 €';s.textContent='Sin movimientos'}
-else if(b>0){c.classList.add('positive');a.innerHTML='<span class="sign">+</span>'+fmt(b);s.textContent='En beneficio'}
-else if(b<0){c.classList.add('negative');a.innerHTML='<span class="sign">−</span>'+fmt(Math.abs(b));s.textContent='En pérdida'}
-else{c.classList.add('neutral');a.innerHTML='0,00 €';s.textContent='Empate técnico'}
-renderSession(b);
+if(t.posicion>0){c.classList.add('positive');a.innerHTML='<span class="sign">+</span>'+fmt(t.posicion)}
+else if(t.posicion<0){c.classList.add('negative');a.innerHTML='<span class="sign">−</span>'+fmt(Math.abs(t.posicion))}
+else{c.classList.add('neutral');a.innerHTML='0,00 €'}
+document.getElementById('balanceSub').innerHTML='Resultado cuenta <b>'+fmtSigned(t.resultado)+'</b> · comisión '+fmt(t.comision);
+/* progreso hacia próxima comisión */
+const pv=document.getElementById('pcVal'),bar=document.getElementById('pcBar'),note=document.getElementById('pcNote');
+const cnt=t.counter;
+pv.textContent=fmtSigned(cnt)+' / 300 €';
+pv.classList.toggle('neg',cnt<0);
+const pct=Math.max(0,Math.min(100,cnt/BLOCK*100));
+bar.style.width=pct.toFixed(1)+'%';
+const falta=BLOCK-cnt;
+note.innerHTML='Faltan <b>'+fmt(falta)+'</b> de resultado para la próxima comisión de '+fmt(FEE)+'.';
 renderChart();
 renderHistory();
 }
-function renderSession(b){
-const sv=document.getElementById('sessionValue');
-sv.classList.remove('positive','negative','neutral');
-if(anchor===null){sv.classList.add('neutral');sv.textContent='—';return}
-const diff=b-anchor;
-if(diff>0){sv.classList.add('positive');sv.textContent='+'+fmt(diff)}
-else if(diff<0){sv.classList.add('negative');sv.textContent='−'+fmt(Math.abs(diff))}
-else{sv.classList.add('neutral');sv.textContent='0,00 €'}
-}
-function markAnchor(){anchor=netBalance();saveAnchor();renderSession(netBalance());toast('Punto marcado a cero')}
 
 function renderChart(){
-const wrap=document.getElementById('chartWrap');
-const finalEl=document.getElementById('chartFinal');
-if(entries.length===0){wrap.innerHTML='<div class="chart-empty">Aún no hay datos.<br>Añade un movimiento para ver la curva.</div>';finalEl.textContent='';finalEl.className='chart-final neutral';return}
-const sorted=entries.slice().sort((a,b)=>new Date(a.date)-new Date(b.date)||a.id-b.id);
-let run=0;const pts=[0];
-sorted.forEach(e=>{run+=e.type==='withdrawal'?e.amount:-e.amount;pts.push(run)});
-const finalV=pts[pts.length-1];
-finalEl.textContent=(finalV>0?'+':finalV<0?'−':'')+fmt(Math.abs(finalV));
-finalEl.className='chart-final '+(finalV>0?'positive':finalV<0?'negative':'neutral');
-const col=finalV>0?'#4ade80':finalV<0?'#f87171':'#8a9690';
-const W=340,H=170,padX=10,padTop=16,padBot=22;
-let min=Math.min(...pts,0),max=Math.max(...pts,0);
-if(min===max){min-=1;max+=1}
-const pad=(max-min)*0.12;min-=pad;max+=pad;
-const n=pts.length-1;
-const X=i=>padX+(i/Math.max(1,n))*(W-2*padX);
-const Y=v=>padTop+(1-(v-min)/(max-min))*(H-padTop-padBot);
-let line='';pts.forEach((v,i)=>{line+=(i===0?'M':'L')+X(i).toFixed(1)+' '+Y(v).toFixed(1)+' '});
-const area=line+'L'+X(n).toFixed(1)+' '+(H-padBot).toFixed(1)+' L'+X(0).toFixed(1)+' '+(H-padBot).toFixed(1)+' Z';
-const zeroY=Y(0).toFixed(1);
-const lx=X(n).toFixed(1),ly=Y(finalV).toFixed(1);
-const svg=`<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
-<defs><linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
-<stop offset="0%" stop-color="${col}" stop-opacity="0.28"/>
-<stop offset="100%" stop-color="${col}" stop-opacity="0"/>
-</linearGradient></defs>
-<line x1="${padX}" y1="${zeroY}" x2="${W-padX}" y2="${zeroY}" stroke="#2a3530" stroke-width="1" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"/>
-<path d="${area}" fill="url(#grad)"/>
-<path d="${line}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
-<circle cx="${lx}" cy="${ly}" r="4" fill="${col}"/>
-<circle cx="${lx}" cy="${ly}" r="8" fill="${col}" opacity="0.18"/>
-</svg>`;
-wrap.innerHTML=svg;
+const wrap=document.getElementById('chartWrap'),finalEl=document.getElementById('chartFinal');
+const res=entries.filter(e=>e.type==='gain'||e.type==='loss');
+if(res.length===0){wrap.innerHTML='<div class="chart-empty">Aún no hay resultados.<br>Añade una ganancia o pérdida para ver el gráfico.</div>';finalEl.textContent='';return}
+const map={};
+res.forEach(e=>{const d=new Date(e.date);const k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');map[k]=(map[k]||0)+(e.type==='gain'?e.amount:-e.amount)});
+const keys=Object.keys(map).sort(),vals=keys.map(k=>map[k]);
+const tot=vals.reduce((s,v)=>s+v,0);
+finalEl.textContent='Total '+fmtSigned(tot);
+finalEl.style.color=tot<0?'#f87171':'#4ade80';
+const labels=keys.map(k=>{const[y,m]=k.split('-');return new Date(y,m-1,1).toLocaleDateString('es-ES',{month:'short'}).replace('.','')});
+const W=340,H=190,padX=10,padTop=20,padBot=28;
+const maxV=Math.max(0,...vals),minV=Math.min(0,...vals),range=(maxV-minV)||1;
+const n=keys.length,step=(W-2*padX)/n,bw=Math.min(46,step*0.6);
+const zeroY=padTop+(maxV/range)*(H-padTop-padBot);
+let bars='',lbls='',tops='';
+keys.forEach((k,i)=>{
+const v=vals[i];
+const x=padX+i*step+(step-bw)/2;
+const h=Math.abs(v)/range*(H-padTop-padBot);
+const y=v>=0?zeroY-h:zeroY;
+const col=v>=0?'#4ade80':'#f87171';
+bars+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(2,h).toFixed(1)}" rx="4" fill="${col}" opacity="0.9"/>`;
+lbls+=`<text x="${(x+bw/2).toFixed(1)}" y="${H-padBot+15}" fill="#8a9690" font-size="10" font-family="monospace" text-anchor="middle">${labels[i]}</text>`;
+if(n<=8){const ty=v>=0?y-6:y+h+13;tops+=`<text x="${(x+bw/2).toFixed(1)}" y="${ty.toFixed(1)}" fill="#e8efe9" font-size="10" font-family="monospace" text-anchor="middle">${Math.round(v)}</text>`}
+});
+wrap.innerHTML=`<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet"><line x1="${padX}" y1="${zeroY.toFixed(1)}" x2="${W-padX}" y2="${zeroY.toFixed(1)}" stroke="#2a3530" stroke-width="1"/>${bars}${tops}${lbls}</svg>`;
 }
 
 function renderHistory(){
 const l=document.getElementById('historyList');
-let f=entries.slice();
-if(currentFilter!=='all')f=f.filter(e=>e.type===currentFilter);
-f.sort((a,b)=>new Date(b.date)-new Date(a.date)||b.id-a.id);
-if(f.length===0){l.innerHTML='<div class="empty">No hay movimientos aún</div>';return}
-l.innerHTML=f.map(e=>`<div class="entry ${e.type}"><div class="entry-icon">${e.type==='deposit'?'↓':'↑'}</div><div class="entry-info"><div class="entry-site">${esc(e.site)}</div><div class="entry-meta">${fmtDate(e.date)} · ${e.type==='deposit'?'Ingreso':'Retirada'}</div></div><div class="entry-amount">${e.type==='deposit'?'−':'+'}${fmt(e.amount)}</div><button class="entry-delete" data-id="${e.id}">×</button></div>`).join('');
+if(entries.length===0){l.innerHTML='<div class="empty">No hay movimientos aún</div>';return}
+const f=entries.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)||b.id-a.id);
+l.innerHTML=f.map(e=>{
+if(e.type==='gain')return `<div class="entry gain"><div class="entry-icon">＋</div><div class="entry-info"><div class="entry-site">Ganancia de la cuenta</div><div class="entry-meta">${fmtDate(e.date)}</div></div><div class="entry-amount">+${fmt(e.amount)}</div><button class="entry-delete" data-id="${e.id}">×</button></div>`;
+if(e.type==='loss')return `<div class="entry loss"><div class="entry-icon">－</div><div class="entry-info"><div class="entry-site">Pérdida de la cuenta</div><div class="entry-meta">${fmtDate(e.date)}</div></div><div class="entry-amount">−${fmt(e.amount)}</div><button class="entry-delete" data-id="${e.id}">×</button></div>`;
+return `<div class="entry payment"><div class="entry-icon">€</div><div class="entry-info"><div class="entry-site">Pago al gestor</div><div class="entry-meta">${fmtDate(e.date)}</div></div><div class="entry-amount">−${fmt(e.amount)}</div><button class="entry-delete" data-id="${e.id}">×</button></div>`;
+}).join('');
 l.querySelectorAll('.entry-delete').forEach(b=>b.addEventListener('click',()=>confirmDelete(parseInt(b.dataset.id))));
 }
+
+function updateHint(){
+const amount=parseFloat(document.getElementById('amount').value)||0;
+const hint=document.getElementById('hint');
+const t=totals();
+if(currentType==='gain'){
+let c=t.counter+amount,blocks=0;while(c>=BLOCK){blocks++;c-=BLOCK}
+if(blocks>0)hint.innerHTML='Con esto se cruzan <b>'+blocks+'</b> tramo(s): comisión <b>'+fmt(blocks*FEE)+'</b>. Progreso tras esto: '+fmt(c)+' / 300.';
+else hint.innerHTML='No cruza tramo aún. Progreso tras esto: <b>'+fmt(c)+' / 300</b> (faltarán '+fmt(BLOCK-c)+').';
+}else if(currentType==='loss'){
+hint.innerHTML='Las pérdidas no generan comisión. Bajan tu progreso hacia el próximo tramo de 300 €.';
+}else{
+hint.innerHTML='Registra lo que le pagas al gestor (normalmente <b>'+fmt(FEE)+'</b> por cada tramo cobrado).';
+}
+}
+
 function addEntry(){
-const site=document.getElementById('site').value.trim();
-const amount=parseFloat(document.getElementById('amount').value);
-const date=document.getElementById('date').value;
-if(!site){toast('Falta la casa');return}
+const amount=parseFloat(document.getElementById('amount').value),date=document.getElementById('date').value;
 if(!amount||amount<=0){toast('Cantidad inválida');return}
 if(!date){toast('Falta la fecha');return}
-entries.push({id:Date.now(),type:currentType,site,amount,date});
-save();render();
-document.getElementById('site').value='';document.getElementById('amount').value='';
-toast(currentType==='deposit'?'Ingreso añadido':'Retirada añadida');
+const before=totals().blocks;
+entries.push({id:Date.now(),type:currentType,amount,date});
+save();
+const after=totals().blocks;
+render();
+document.getElementById('amount').value='';updateHint();
+if(currentType==='gain'&&after>before){const nb=after-before;toast('¡Comisión! '+nb+' tramo(s) = '+fmt(nb*FEE)+' a pagar')}
+else toast(currentType==='gain'?'Ganancia añadida':currentType==='loss'?'Pérdida añadida':'Pago añadido');
 }
 function confirmDelete(id){
 const e=entries.find(x=>x.id===id);if(!e)return;
+const lbl=e.type==='gain'?'Ganancia':e.type==='loss'?'Pérdida':'Pago';
 pendingAction=()=>{entries=entries.filter(x=>x.id!==id);save();render();toast('Eliminado')};
-showModal('Eliminar movimiento',`${e.site} · ${fmt(e.amount)}. Esta acción no se puede deshacer.`);
+showModal('Eliminar movimiento',`${lbl} · ${fmt(e.amount)}. Esta acción no se puede deshacer.`);
 }
 function confirmClearAll(){
 if(entries.length===0){toast('Nada que borrar');return}
 pendingAction=()=>{entries=[];save();render();toast('Todo borrado')};
-showModal('Borrar todos los datos','Vas a eliminar todo el historial de movimientos. Esta acción no se puede deshacer.');
+showModal('Borrar todos los datos','Vas a eliminar todas las ganancias, pérdidas y pagos. Esta acción no se puede deshacer.');
 }
 
-/* ===== BONOS ===== */
 function renderBonos(){
-const got=BONOS.filter(b=>bonosHechos[b.id]).reduce((s,b)=>s+b.gain,0);
-const totalPot=BONOS.reduce((s,b)=>s+b.gain,0);
-const pending=totalPot-got;
-const doneCount=BONOS.filter(b=>bonosHechos[b.id]).length;
+const got=BONOS.filter(b=>bonosHechos[b.id]).reduce((s,b)=>s+b.gain,0),totalPot=BONOS.reduce((s,b)=>s+b.gain,0),doneCount=BONOS.filter(b=>bonosHechos[b.id]).length;
 document.getElementById('bsGot').textContent='+'+fmt(got);
-document.getElementById('bsPending').textContent=fmt(pending);
+document.getElementById('bsPending').textContent=fmt(totalPot-got);
 document.getElementById('bsBar').style.width=(totalPot>0?(got/totalPot*100):0).toFixed(1)+'%';
 document.getElementById('bsCount').textContent=`${doneCount} de ${BONOS.length} bonos · potencial total ${fmt(totalPot)}`;
-const list=document.getElementById('bonosList');
 const fase1=BONOS.filter(b=>b.phase===1),fase2=BONOS.filter(b=>b.phase===2);
-const card=b=>`<div class="bonus-card ${bonosHechos[b.id]?'done':''}" data-bonus="${b.id}"><div class="bonus-main"><div class="bonus-top"><span class="bonus-name">${esc(b.name)}</span><span class="bonus-gain">+${fmt(b.gain)}</span></div><div class="bonus-tags">${b.tags.map(t=>`<span class="bonus-tag">${esc(t)}</span>`).join('')}</div><div class="bonus-desc">${esc(b.desc)}</div></div><button class="bonus-check" data-check="${b.id}">✓</button></div>`;
-list.innerHTML=
-'<div class="phase-title">Fase 1 · Apuestas gratis</div>'+
-'<div class="phase-desc">Bonos en los que apuestas y te devuelven el importe en freebets. Los más sencillos para empezar.</div>'+
-fase1.map(card).join('')+
-'<div class="phase-title">Fase 2 · Reembolso</div>'+
-'<div class="phase-desc">Bonos de reembolso: si tu apuesta falla, te devuelven dinero en freebets.</div>'+
-fase2.map(card).join('');
-list.querySelectorAll('.bonus-check').forEach(btn=>btn.addEventListener('click',()=>toggleBono(btn.dataset.check)));
-}
-function toggleBono(id){
-if(bonosHechos[id])delete bonosHechos[id];else bonosHechos[id]=true;
-saveBonos();renderBonos();
+const card=b=>`<div class="bonus-card ${bonosHechos[b.id]?'done':''}"><div class="bonus-main"><div class="bonus-top"><span class="bonus-name">${b.name}</span><span class="bonus-gain">+${fmt(b.gain)}</span></div><div class="bonus-tags">${b.tags.map(t=>`<span class="bonus-tag">${t}</span>`).join('')}</div><div class="bonus-desc">${b.desc}</div></div><button class="bonus-check" data-check="${b.id}">✓</button></div>`;
+document.getElementById('bonosList').innerHTML='<div class="phase-title">Fase 1 · Apuestas gratis</div><div class="phase-desc">Apuestas y te devuelven el importe en freebets. Los más sencillos para empezar.</div>'+fase1.map(card).join('')+'<div class="phase-title">Fase 2 · Reembolso</div><div class="phase-desc">Si tu apuesta falla, te devuelven dinero en freebets.</div>'+fase2.map(card).join('');
+document.querySelectorAll('.bonus-check').forEach(btn=>btn.addEventListener('click',()=>{const id=btn.dataset.check;if(bonosHechos[id])delete bonosHechos[id];else bonosHechos[id]=true;saveBonos();renderBonos()}));
 }
 
-/* ===== EXPORT / BACKUP ===== */
-function exportCSV(){
-if(entries.length===0){toast('Nada que exportar');return}
-const h='Fecha,Tipo,Casa,Cantidad\n';
-const r=entries.slice().sort((a,b)=>new Date(a.date)-new Date(b.date)).map(e=>`${e.date},${e.type==='deposit'?'Ingreso':'Retirada'},"${e.site.replace(/"/g,'""')}",${e.amount.toFixed(2)}`).join('\n');
-download(h+r,`balance-${new Date().toISOString().slice(0,10)}.csv`,'text/csv;charset=utf-8;');
-toast('CSV descargado');
-}
 function backupJSON(){
 if(entries.length===0&&Object.keys(bonosHechos).length===0){toast('Nada que respaldar');return}
-download(JSON.stringify({version:4,exportedAt:new Date().toISOString(),entries,anchor,bonosHechos},null,2),`backup-balance-${new Date().toISOString().slice(0,10)}.json`,'application/json');
-toast('Copia guardada');
-}
-function download(c,f,m){
-const b=new Blob([c],{type:m}),u=URL.createObjectURL(b),a=document.createElement('a');
-a.href=u;a.download=f;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);
+const b=new Blob([JSON.stringify({version:6,exportedAt:new Date().toISOString(),entries,salida,bonosHechos},null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');
+a.href=u;a.download=`backup-balance-${new Date().toISOString().slice(0,10)}.json`;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);toast('Copia guardada');
 }
 function restoreFromFile(file){
 const r=new FileReader();
-r.onload=e=>{
-try{
-const d=JSON.parse(e.target.result);
-if(!Array.isArray(d.entries))throw new Error();
-pendingAction=()=>{entries=d.entries;anchor=(d.anchor===undefined?null:d.anchor);bonosHechos=d.bonosHechos||{};save();saveAnchor();saveBonos();render();renderBonos();toast('Datos restaurados')};
+r.onload=e=>{try{const d=JSON.parse(e.target.result);if(!Array.isArray(d.entries))throw new Error();
+pendingAction=()=>{entries=d.entries;salida=(typeof d.salida==='number'?d.salida:-3000);bonosHechos=d.bonosHechos||{};save();saveSalida();saveBonos();render();renderBonos();toast('Datos restaurados')};
 showModal('Restaurar copia',`Vas a importar ${d.entries.length} movimientos. Esto reemplazará tus datos actuales.`);
-}catch(err){toast('Archivo inválido')}
-};
+}catch(err){toast('Archivo inválido')}};
 r.readAsText(file);
 }
 function showModal(t,x){document.getElementById('modalTitle').textContent=t;document.getElementById('modalText').textContent=x;document.getElementById('modal').classList.add('active')}
 function hideModal(){document.getElementById('modal').classList.remove('active');pendingAction=null}
+function openSalida(){document.getElementById('salidaInput').value=salida;document.getElementById('salidaModal').classList.add('active')}
+function saveSalidaModal(){const v=parseFloat(document.getElementById('salidaInput').value);if(isNaN(v)){toast('Valor inválido');return}salida=v;saveSalida();render();document.getElementById('salidaModal').classList.remove('active');toast('Salida actualizada')}
 
-/* ===== EVENTS ===== */
-document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
-document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-t.classList.add('active');
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.getElementById('page-'+t.dataset.page).classList.add('active');
-window.scrollTo(0,0);
-}));
-document.querySelectorAll('.type-btn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.type-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentType=b.dataset.type}));
-document.querySelectorAll('.filter-btn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentFilter=b.dataset.filter;renderHistory()}));
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+t.dataset.page).classList.add('active');window.scrollTo(0,0)}));
+document.querySelectorAll('.type-btn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.type-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentType=b.dataset.type;document.getElementById('addBtn').textContent=currentType==='gain'?'Añadir ganancia':currentType==='loss'?'Añadir pérdida':'Añadir pago';updateHint()}));
+document.getElementById('amount').addEventListener('input',updateHint);
 document.getElementById('addBtn').addEventListener('click',addEntry);
-document.getElementById('anchorBtn').addEventListener('click',markAnchor);
-document.getElementById('exportBtn').addEventListener('click',exportCSV);
+document.getElementById('salidaPill').addEventListener('click',openSalida);
+document.getElementById('salidaCancel').addEventListener('click',()=>document.getElementById('salidaModal').classList.remove('active'));
+document.getElementById('salidaSave').addEventListener('click',saveSalidaModal);
+document.getElementById('salidaModal').addEventListener('click',e=>{if(e.target.id==='salidaModal')document.getElementById('salidaModal').classList.remove('active')});
 document.getElementById('backupBtn').addEventListener('click',backupJSON);
 document.getElementById('clearBtn').addEventListener('click',confirmClearAll);
 document.getElementById('restoreBtn').addEventListener('click',()=>document.getElementById('restoreInput').click());
@@ -464,9 +470,9 @@ document.getElementById('restoreInput').addEventListener('change',e=>{if(e.targe
 document.getElementById('modalCancel').addEventListener('click',hideModal);
 document.getElementById('modalConfirm').addEventListener('click',()=>{if(pendingAction)pendingAction();hideModal()});
 document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')hideModal()});
-['site','amount','date'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')addEntry()}));
+['amount','date'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')addEntry()}));
 document.getElementById('date').valueAsDate=new Date();
-load();render();renderBonos();
+load();render();renderBonos();updateHint();
 </script>
 </body>
 </html>
