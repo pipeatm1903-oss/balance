@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0e0c;--bg-card:#161c19;--border:#1f2622;--border-strong:#2a3530;--text:#e8efe9;--text-dim:#8a9690;--text-faint:#515a55;--green:#4ade80;--green-soft:#4ade8015;--red:#f87171;--gold:#d4a574;--gold-soft:#d4a57415;--display:'Fraunces',serif;--mono:'JetBrains Mono',monospace}
+:root{--bg:#0a0e0c;--bg-card:#161c19;--border:#1f2622;--border-strong:#2a3530;--text:#e8efe9;--text-dim:#8a9690;--text-faint:#515a55;--green:#4ade80;--green-soft:#4ade8015;--red:#f87171;--red-soft:#f8717115;--gold:#d4a574;--gold-soft:#d4a57415;--display:'Fraunces',serif;--mono:'JetBrains Mono',monospace}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:14px;min-height:100vh;-webkit-font-smoothing:antialiased}
 body{background:radial-gradient(ellipse at top,#14201a 0%,transparent 50%),radial-gradient(ellipse at bottom right,#1a1410 0%,transparent 50%),var(--bg);background-attachment:fixed;padding:max(24px,env(safe-area-inset-top)) 16px max(100px,env(safe-area-inset-bottom))}
@@ -44,6 +44,11 @@ svg.chart{width:100%;height:230px;display:block}
 .section-title{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-.01em;margin-bottom:14px;display:flex;align-items:baseline;gap:10px}
 .section-title::after{content:'';flex:1;height:1px;background:var(--border)}
 .form{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:18px}
+.type-toggle{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--bg);padding:4px;border-radius:10px;margin-bottom:14px;border:1px solid var(--border)}
+.type-btn{background:transparent;border:none;color:var(--text-dim);font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:10px;border-radius:7px;cursor:pointer;transition:all .2s;font-weight:500}
+.type-btn.active{background:var(--bg-card);color:var(--text);box-shadow:0 1px 0 var(--border-strong)}
+.type-btn[data-type="profit"].active{color:var(--green)}
+.type-btn[data-type="expense"].active{color:var(--red)}
 .field{margin-bottom:12px}
 .field label{display:block;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px}
 .field input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:16px;-webkit-appearance:none;appearance:none}
@@ -58,12 +63,16 @@ svg.chart{width:100%;height:230px;display:block}
 .history-list{display:flex;flex-direction:column;gap:8px}
 .empty{text-align:center;padding:40px 20px;color:var(--text-faint);font-style:italic;font-family:var(--display)}
 .entry{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:14px}
-.entry-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:19px;font-weight:600;flex-shrink:0;background:var(--green-soft);color:var(--green)}
+.entry-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:19px;font-weight:600;flex-shrink:0}
+.entry.profit .entry-icon{background:var(--green-soft);color:var(--green)}
+.entry.expense .entry-icon{background:var(--red-soft);color:var(--red)}
 .entry-info{flex:1;min-width:0}
 .entry-site{font-size:14px;color:var(--text);font-weight:500;margin-bottom:2px}
 .entry-meta{font-size:11px;color:var(--text-faint)}
 .entry-amount{text-align:right}
-.entry-net{font-family:var(--display);font-size:18px;font-weight:600;color:var(--green)}
+.entry-net{font-family:var(--display);font-size:18px;font-weight:600}
+.entry.profit .entry-net{color:var(--green)}
+.entry.expense .entry-net{color:var(--red)}
 .entry-fee{font-size:10px;color:var(--text-faint);margin-top:2px}
 .entry-delete{background:transparent;border:none;color:var(--text-faint);cursor:pointer;font-size:22px;padding:4px 8px;line-height:1}
 .entry-delete:active{color:var(--red)}
@@ -97,6 +106,7 @@ svg.chart{width:100%;height:230px;display:block}
 <div id="balanceAmount" class="balance-amount">−3.000,00 €</div>
 <div class="balance-sub">Beneficio neto acumulado: <span class="neto" id="netoTotal">+0,00 €</span></div>
 <div class="paid-line" id="paidLine">Total pagado en comisiones: 0,00 €</div>
+<div class="paid-line" id="subsLine">Coste suscripción acumulado: 0,00 €</div>
 </div>
 
 <div class="chart-card">
@@ -108,10 +118,14 @@ svg.chart{width:100%;height:230px;display:block}
 </div>
 
 <section class="form-section">
-<h2 class="section-title">Añadir beneficio</h2>
+<h2 class="section-title">Añadir</h2>
 <div class="form">
+<div class="type-toggle">
+<button type="button" class="type-btn active" data-type="profit">＋ Beneficio</button>
+<button type="button" class="type-btn" data-type="expense">－ Gasto</button>
+</div>
 <div class="row">
-<div class="field"><label for="amount">Beneficio que te dicen (€)</label><input type="number" id="amount" step="0.01" min="0" placeholder="417,00" inputmode="decimal"></div>
+<div class="field"><label for="amount" id="amountLabel">Beneficio que te dicen (€)</label><input type="number" id="amount" step="0.01" min="0" placeholder="417,00" inputmode="decimal"></div>
 <div class="field"><label for="date">Fecha</label><input type="date" id="date"></div>
 </div>
 <div id="hint" class="hint">Comisión (30%): <b id="hintFee">0,00 €</b> · Tu neto: <span class="keep" id="hintKeep">0,00 €</span></div>
@@ -162,10 +176,10 @@ svg.chart{width:100%;height:230px;display:block}
 const KEY='mi-cuenta-v3';
 const SALIDA_KEY='mi-cuenta-salida';
 const RATE=0.30;
-let entries=[],pendingAction=null,salida=-3000;
+let entries=[],currentType='profit',pendingAction=null,salida=-3000;
 
 function load(){
-try{const r=localStorage.getItem(KEY);entries=r?JSON.parse(r):[]}catch(e){entries=[]}
+try{const r=localStorage.getItem(KEY);entries=r?JSON.parse(r):[];entries.forEach(e=>{if(!e.type)e.type='profit'})}catch(e){entries=[]}
 try{const r=localStorage.getItem(SALIDA_KEY);salida=(r===null)?-3000:parseFloat(r)}catch(e){salida=-3000}
 }
 function save(){try{localStorage.setItem(KEY,JSON.stringify(entries))}catch(e){toast('Error al guardar')}}
@@ -176,11 +190,12 @@ const fmtDate=iso=>new Date(iso).toLocaleDateString('es-ES',{day:'2-digit',month
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400)}
 
 function totals(){
-const bruto=entries.reduce((s,e)=>s+e.amount,0);
+const bruto=entries.filter(e=>e.type==='profit').reduce((s,e)=>s+e.amount,0);
 const comision=bruto*RATE;
 const neto=bruto-comision;
-const posicion=salida+neto;
-return {bruto,comision,neto,posicion};
+const gastos=entries.filter(e=>e.type==='expense').reduce((s,e)=>s+e.amount,0);
+const posicion=salida+neto-gastos;
+return {bruto,comision,neto,gastos,posicion};
 }
 
 function render(){
@@ -188,6 +203,7 @@ const t=totals();
 document.getElementById('salidaTxt').textContent=fmtSigned(salida);
 document.getElementById('netoTotal').textContent='+'+fmt(t.neto);
 document.getElementById('paidLine').textContent='Total pagado en comisiones: '+fmt(t.comision);
+document.getElementById('subsLine').textContent='Coste suscripción acumulado: '+fmt(t.gastos);
 const c=document.getElementById('balanceCard'),a=document.getElementById('balanceAmount');
 c.classList.remove('positive','negative','neutral');
 if(t.posicion>0){c.classList.add('positive');a.innerHTML='<span class="sign">+</span>'+fmt(t.posicion)}
@@ -199,16 +215,16 @@ renderHistory();
 
 function renderChart(){
 const wrap=document.getElementById('chartWrap'),finalEl=document.getElementById('chartFinal');
-if(entries.length===0){wrap.innerHTML='<div class="chart-empty">Aún no hay beneficios.<br>Añade el primero para ver la gráfica.</div>';finalEl.textContent='';return}
+const profits=entries.filter(e=>e.type==='profit');
+if(profits.length===0){wrap.innerHTML='<div class="chart-empty">Aún no hay beneficios.<br>Añade el primero para ver la gráfica.</div>';finalEl.textContent='';return}
 const map={};
-entries.forEach(e=>{const d=new Date(e.date);const k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');map[k]=(map[k]||0)+e.amount*(1-RATE)});
+profits.forEach(e=>{const d=new Date(e.date);const k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');map[k]=(map[k]||0)+e.amount*(1-RATE)});
 const keys=Object.keys(map).sort(),vals=keys.map(k=>map[k]);
 finalEl.textContent='Total +'+fmt(vals.reduce((s,v)=>s+v,0));
 const labels=keys.map(k=>{const[y,m]=k.split('-');return new Date(y,m-1,1).toLocaleDateString('es-ES',{month:'short'}).replace('.','')});
 const W=360,H=230,padL=44,padR=10,padTop=18,padBot=30;
 const max=Math.max(...vals)*1.15||1;
 const n=keys.length,step=(W-padL-padR)/n,bw=Math.min(50,step*0.62);
-/* líneas de referencia del eje Y */
 let grid='',ylabels='';
 const ticks=4;
 for(let i=0;i<=ticks;i++){
@@ -235,48 +251,57 @@ const l=document.getElementById('historyList');
 if(entries.length===0){l.innerHTML='<div class="empty">No hay movimientos aún</div>';return}
 const f=entries.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)||b.id-a.id);
 l.innerHTML=f.map(e=>{
+if(e.type==='expense'){
+return `<div class="entry expense"><div class="entry-icon">－</div><div class="entry-info"><div class="entry-site">Gasto suscripción</div><div class="entry-meta">${fmtDate(e.date)}</div></div><div class="entry-amount"><div class="entry-net">−${fmt(e.amount)}</div><div class="entry-fee">gasto</div></div><button class="entry-delete" data-id="${e.id}">×</button></div>`;
+}
 const fee=e.amount*RATE,net=e.amount-fee;
-return `<div class="entry"><div class="entry-icon">＋</div><div class="entry-info"><div class="entry-site">Beneficio ${fmt(e.amount)}</div><div class="entry-meta">${fmtDate(e.date)} · comisión ${fmt(fee)}</div></div><div class="entry-amount"><div class="entry-net">+${fmt(net)}</div><div class="entry-fee">neto</div></div><button class="entry-delete" data-id="${e.id}">×</button></div>`;
+return `<div class="entry profit"><div class="entry-icon">＋</div><div class="entry-info"><div class="entry-site">Beneficio ${fmt(e.amount)}</div><div class="entry-meta">${fmtDate(e.date)} · comisión ${fmt(fee)}</div></div><div class="entry-amount"><div class="entry-net">+${fmt(net)}</div><div class="entry-fee">neto</div></div><button class="entry-delete" data-id="${e.id}">×</button></div>`;
 }).join('');
 l.querySelectorAll('.entry-delete').forEach(b=>b.addEventListener('click',()=>confirmDelete(parseInt(b.dataset.id))));
 }
 
 function updateHint(){
 const amount=parseFloat(document.getElementById('amount').value)||0;
-document.getElementById('hintFee').textContent=fmt(amount*RATE);
-document.getElementById('hintKeep').textContent=fmt(amount*(1-RATE));
+const hint=document.getElementById('hint');
+if(currentType==='profit'){
+hint.innerHTML='Comisión (30%): <b>'+fmt(amount*RATE)+'</b> · Tu neto: <span class="keep">'+fmt(amount*(1-RATE))+'</span>';
+}else{
+hint.innerHTML='Gasto directo (suscripción mensual). Resta entero de tu posición.';
+}
 }
 
 function addEntry(){
 const amount=parseFloat(document.getElementById('amount').value),date=document.getElementById('date').value;
 if(!amount||amount<=0){toast('Cantidad inválida');return}
 if(!date){toast('Falta la fecha');return}
-entries.push({id:Date.now(),amount,date});
+entries.push({id:Date.now(),type:currentType,amount,date});
 save();render();
 document.getElementById('amount').value='';updateHint();
-toast('Neto +'+fmt(amount*(1-RATE))+' · pagas '+fmt(amount*RATE));
+if(currentType==='profit')toast('Neto +'+fmt(amount*(1-RATE))+' · pagas '+fmt(amount*RATE));
+else toast('Gasto −'+fmt(amount)+' añadido');
 }
 function confirmDelete(id){
 const e=entries.find(x=>x.id===id);if(!e)return;
+const lbl=e.type==='expense'?'Gasto':'Beneficio';
 pendingAction=()=>{entries=entries.filter(x=>x.id!==id);save();render();toast('Eliminado')};
-showModal('Eliminar beneficio',`Beneficio de ${fmt(e.amount)}. Esta acción no se puede deshacer.`);
+showModal('Eliminar movimiento',`${lbl} de ${fmt(e.amount)}. Esta acción no se puede deshacer.`);
 }
 function confirmClearAll(){
 if(entries.length===0){toast('Nada que borrar');return}
 pendingAction=()=>{entries=[];save();render();toast('Todo borrado')};
-showModal('Borrar todos los datos','Vas a eliminar todos los beneficios registrados. Esta acción no se puede deshacer.');
+showModal('Borrar todos los datos','Vas a eliminar todos los movimientos registrados. Esta acción no se puede deshacer.');
 }
 
 function backupJSON(){
 if(entries.length===0){toast('Nada que respaldar');return}
-const b=new Blob([JSON.stringify({version:7,exportedAt:new Date().toISOString(),entries,salida},null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');
+const b=new Blob([JSON.stringify({version:8,exportedAt:new Date().toISOString(),entries,salida},null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');
 a.href=u;a.download=`backup-balance-${new Date().toISOString().slice(0,10)}.json`;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);toast('Copia guardada');
 }
 function restoreFromFile(file){
 const r=new FileReader();
 r.onload=e=>{try{const d=JSON.parse(e.target.result);if(!Array.isArray(d.entries))throw new Error();
-pendingAction=()=>{entries=d.entries;salida=(typeof d.salida==='number'?d.salida:-3000);save();saveSalida();render();toast('Datos restaurados')};
-showModal('Restaurar copia',`Vas a importar ${d.entries.length} beneficios. Esto reemplazará tus datos actuales.`);
+pendingAction=()=>{entries=d.entries;entries.forEach(x=>{if(!x.type)x.type='profit'});salida=(typeof d.salida==='number'?d.salida:-3000);save();saveSalida();render();toast('Datos restaurados')};
+showModal('Restaurar copia',`Vas a importar ${d.entries.length} movimientos. Esto reemplazará tus datos actuales.`);
 }catch(err){toast('Archivo inválido')}};
 r.readAsText(file);
 }
@@ -285,6 +310,14 @@ function hideModal(){document.getElementById('modal').classList.remove('active')
 function openSalida(){document.getElementById('salidaInput').value=salida;document.getElementById('salidaModal').classList.add('active')}
 function saveSalidaModal(){const v=parseFloat(document.getElementById('salidaInput').value);if(isNaN(v)){toast('Valor inválido');return}salida=v;saveSalida();render();document.getElementById('salidaModal').classList.remove('active');toast('Salida actualizada')}
 
+document.querySelectorAll('.type-btn').forEach(b=>b.addEventListener('click',()=>{
+document.querySelectorAll('.type-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+currentType=b.dataset.type;
+document.getElementById('addBtn').textContent=currentType==='profit'?'Añadir beneficio':'Añadir gasto';
+document.getElementById('amountLabel').textContent=currentType==='profit'?'Beneficio que te dicen (€)':'Coste (€)';
+document.getElementById('amount').placeholder=currentType==='profit'?'417,00':'90,00';
+updateHint();
+}));
 document.getElementById('amount').addEventListener('input',updateHint);
 document.getElementById('addBtn').addEventListener('click',addEntry);
 document.getElementById('salidaPill').addEventListener('click',openSalida);
